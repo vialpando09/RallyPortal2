@@ -1,0 +1,158 @@
+﻿@model RallyPortal.Team
+@using Telerik.Web.Mvc.UI
+@using RallyPortal;
+@{
+    ViewBag.Title = "Create";
+    ViewBag.PageTitle = "Team";
+}
+
+@section AdditionScriptsEnd{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.5.2.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.visualize.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/widgets.js")"></script>
+}
+@section AdditionalOnready{
+jQuery('.accordion_container').accordion();
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm("Create", "Team", FormMethod.Post, new { @Class = "form label-inline uniform" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="content_pad">
+        <h3>Create</h3>
+        <div class="accordion_container" style="min-height: 100%;">            
+            <h2 class="accordion_panel active">
+                <a href="#">Team Data</a></h2>
+            <div class="accordion_content" style="display: block;">
+                <div class="field" style="margin-top: 20px; padding: 0 40px;">
+                    @Html.LabelFor(model => model.TeamName, "Name")
+                    @Html.TextBoxFor(model => model.TeamName, new { size = "50" })
+                    @Html.ValidationMessageFor(model => model.TeamName)
+                </div>   
+                <div class="field" style="margin-top: 20px; padding: 0 40px;">
+                   @Html.LabelFor(model => model.TeamSummary, "Summary")
+                   @Html.HalfSizeFullTextAreaFor(model => model.TeamSummary)
+                   @Html.ValidationMessageFor(model => model.TeamSummary)
+                </div>             
+                <div class="field" style="margin-top: 20px; padding: 0 40px;">
+                    @Html.LabelFor(model => model.TeamImageUrl, "Image")
+                    @Html.HiddenFor(model => model.TeamImageUrl)
+                    @(Html.Telerik().Upload()
+                        .Name("teamImageUrl")
+                        .Multiple(false)
+                        .Async(async => async
+                            .Save("SaveTempTeamImage", "Upload")
+                            .Remove("RemoveTempTeamImage", "Upload")
+                            .AutoUpload(true)
+                        )
+                        .ClientEvents(events => events
+                            .OnSuccess(
+                                @<text>
+                                    function(e) {
+                                        if(e.operation == "upload")
+                                            $("#showTeamImage").attr('src', "@Url.Content("~/Images/tempTeam")");
+                                        else
+                                            $("#showTeamImage").attr('src', "@Url.Content("~/Images/no_image.jpg")");
+                                    }
+                                </text>
+                            )
+                        )
+                    )                    
+                    <div>
+                        <img src="@Url.Content("~/Images/no_image.jpg")" alt="" id="showTeamImage" />                        
+                    </div>
+                </div>
+            </div>            
+            <h2 class="accordion_panel">
+                <a href="#">Driver Data</a></h2>
+            <div class="accordion_content" style="display: block;">
+                <div class="field" style="margin-top: 20px; padding: 0 40px;">
+                    @Html.LabelFor(model => model.DriverName, "Name")
+                    @Html.TextBoxFor(model => model.DriverName, new { size = "50" })
+                    @Html.ValidationMessageFor(model => model.DriverName)
+                </div>   
+                <div class="field" style="margin-top: 20px; padding: 0 40px;">
+                   @Html.LabelFor(model => model.DriverSummary, "Summary")
+                   @Html.HalfSizeFullTextAreaFor(model => model.DriverSummary)
+                   @Html.ValidationMessageFor(model => model.DriverSummary)
+                </div>             
+                <div class="field" style="margin-top: 20px; padding: 0 40px;">
+                    @Html.LabelFor(model => model.DriverImageUrl, "Image")
+                    @Html.HiddenFor(model => model.DriverImageUrl)
+                    @(Html.Telerik().Upload()
+                        .Name("teamDriverImageUrl")
+                        .Multiple(false)
+                        .Async(async => async
+                            .Save("SaveTempDriverImage", "Upload")
+                            .Remove("RemoveTempDriverImage", "Upload")
+                            .AutoUpload(true)
+                        )
+                        .ClientEvents(events => events
+                            .OnSuccess(
+                                @<text>
+                                    function(e) {
+                                        if(e.operation == "upload")
+                                            $("#showDriverImage").attr('src', "@Url.Content("~/Images/tempDriver")");
+                                        else
+                                            $("#showDriverImage").attr('src', "@Url.Content("~/Images/no_image.jpg")");
+                                    }
+                                </text>
+                            )
+                        )
+                    )                    
+                    <div>
+                        <img src="@Url.Content("~/Images/no_image.jpg")" alt="" id="showDriverImage" />                        
+                    </div>
+                </div>
+            </div>            
+            <h2 class="accordion_panel">
+                <a href="#">Co-Driver Data</a></h2>
+            <div class="accordion_content" style="display: block;">
+                <div class="field" style="margin-top: 20px; padding: 0 40px;">
+                    @Html.LabelFor(model => model.CoDriverName, "Name")
+                    @Html.TextBoxFor(model => model.CoDriverName, new { size = "50" })
+                    @Html.ValidationMessageFor(model => model.CoDriverName)
+                </div>   
+                <div class="field" style="margin-top: 20px; padding: 0 40px;">
+                   @Html.LabelFor(model => model.CoDriverSummary, "Summary")
+                   @Html.HalfSizeFullTextAreaFor(model => model.CoDriverSummary)
+                   @Html.ValidationMessageFor(model => model.CoDriverSummary)
+                </div>             
+                <div class="field" style="margin-top: 20px; padding: 0 40px;">
+                    @Html.LabelFor(model => model.CoDriverImageUrl, "Image")
+                    @Html.HiddenFor(model => model.CoDriverImageUrl)
+                    @(Html.Telerik().Upload()
+                        .Name("teamCoDriverImageUrl")
+                        .Multiple(false)
+                        .Async(async => async
+                            .Save("SaveTempCoDriverImage", "Upload")
+                            .Remove("RemoveTempCoDriverImage", "Upload")
+                            .AutoUpload(true)
+                        )
+                        .ClientEvents(events => events
+                            .OnSuccess(
+                                @<text>
+                                    function(e) {
+                                        if(e.operation == "upload")
+                                            $("#showCoDriverImage").attr('src', "@Url.Content("~/Images/tempCoDriver")");
+                                        else
+                                            $("#showCoDriverImage").attr('src', "@Url.Content("~/Images/no_image.jpg")");
+                                    }
+                                </text>
+                            )
+                        )
+                    )                    
+                    <div>
+                        <img src="@Url.Content("~/Images/no_image.jpg")" alt="" id="showCoDriverImage" />                        
+                    </div>
+                </div>
+            </div>             
+        </div>
+    </div>
+    <div class="content_pad">
+        <input type="submit" value="Save" />
+        @Html.ActionLinkButton(Url, "Index", "Team", null, "Back to list")
+    </div>
+}

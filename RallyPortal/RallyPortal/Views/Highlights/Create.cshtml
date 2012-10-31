@@ -1,0 +1,94 @@
+﻿@model RallyPortal.Highlights
+@using Telerik.Web.Mvc.UI
+@using RallyPortal;
+@{
+    ViewBag.Title = "Create";
+    ViewBag.PageTitle = "Highlights";
+}
+
+@section AdditionScriptsEnd{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.5.2.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.visualize.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/widgets.js")"></script>
+}
+@section AdditionalOnready{
+jQuery('.accordion_container').accordion();
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    function showImage() {
+        var path = $("#showFeaturedImage").attr("value");
+        alert(path);
+    }
+</script>
+
+@using (Html.BeginForm("Create", "Highlights", FormMethod.Post, new { @Class = "form label-inline uniform" }))
+{
+    @Html.ValidationSummary(true)
+    <input type="hidden" name="ImageUrl" id="ImageUrl" value="" />
+    <input type="hidden" name="AuthorName" id="AuthorName" value="@User.Identity.Name" />
+    <input type="hidden" name="AuthorEmail" id="AuthorEmail" value="@Membership.GetUser().Email" />
+    <div class="content_pad">
+        <h3>Create</h3>
+        <div class="accordion_container" style="min-height: 100%;">            
+            <h2 class="accordion_panel active">
+                <a href="#">Settings</a></h2>
+            <div class="accordion_content" style="display: block;">
+                <div class="field" style="margin-top: 20px; padding: 0 40px;">
+                    @Html.LabelFor(model => model.Title, "Title")
+                    @Html.TextBoxFor(model => model.Title, new { size = "50" })
+                    @Html.ValidationMessageFor(model => model.Title)
+                </div>                
+                <div class="field" style="margin-top: 20px; padding: 0 40px;">
+                    @Html.LabelFor(model => model.ImageUrl, "Image")
+                    @(Html.Telerik().Upload()
+                        .Name("attachments")
+                        .Multiple(false)
+                        .Async(async => async
+                            .Save("SaveTempFeaturedImage", "Upload")
+                            .Remove("RemoveTempFeaturedImage", "Upload")
+                            .AutoUpload(true)
+                        )
+                        .ClientEvents(events => events
+                            .OnSuccess(
+                                @<text>
+                                    function(e) {
+                                        if(e.operation == "upload")
+                                            $("#showFeaturedImage").attr('src', "@Url.Content("~/Images/temp")");
+                                        else
+                                            $("#showFeaturedImage").attr('src', "@Url.Content("~/Images/no_image.jpg")");
+                                    }
+                                </text>
+                            )
+                        )
+                    )                    
+                    <div>
+                        <img src="@Url.Content("~/Images/no_image.jpg")" alt="" id="showFeaturedImage" />                        
+                    </div>
+                </div>
+            </div>
+             <h2 class="accordion_panel">
+                <a href="#">Content</a></h2>
+            <div class="accordion_content" style="display: block;">
+                <div class="field" style="margin-top: 20px; padding: 0 40px;">
+                   @Html.FullTextAreaFor(model => model.Content)
+                   @Html.ValidationMessageFor(model => model.Content)
+                </div>
+            </div>
+            <h2 class="accordion_panel">
+                <a href="#">Video File</a></h2>
+            <div class="accordion_content" style="display: block;">
+                <div class="field" style="margin-top: 20px; padding: 0 40px;">
+                   <p class="note">Paste your youtube content in the textarea!</p> 
+                   @Html.TextAreaFor(model => model.VideoUrl, 15, 170, null)
+                   @Html.ValidationMessageFor(model => model.VideoUrl)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content_pad">
+        <input type="submit" value="Save" />
+        @Html.ActionLinkButton(Url, "Index", "Hightlights", null, "Back to list")
+    </div>
+}

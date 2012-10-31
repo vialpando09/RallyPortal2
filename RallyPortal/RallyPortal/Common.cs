@@ -1,0 +1,312 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using System.Security.Cryptography;
+using System.Text;
+using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
+using System.Security.Policy;
+using System.Linq.Expressions;
+using System.Web.Routing;
+using System.Net;
+using System.Web.Mail;
+using System.ComponentModel;
+using System.IO;
+using System.Web;
+using System.Globalization;
+using Telerik.Web.Mvc.UI;
+using System.Drawing;
+
+namespace RallyPortal
+{
+    public enum MessageType { Success, Information, Error, Warning }
+        
+    public static class LinkExtensions
+    {
+        public static MvcHtmlString ActionLinkButton(this HtmlHelper helper, UrlHelper url, string action, string controller, object routeValues, string value)
+        {
+            string result = "<input type=\"button\" onclick=\"javascript:window.location.href='" + url.Action(action, controller, routeValues) + "'\" value=\"" + value + "\" />";
+            return new MvcHtmlString(result);
+        }
+
+        public static MvcHtmlString ActionLinkButton(this HtmlHelper helper, string url, string value)
+        {
+            string result = "<input type=\"button\" onclick=\"javascript:window.location.href='" + url + "'\" value=\"" + value + "\" />";
+            return new MvcHtmlString(result);
+        }
+    }
+
+
+    
+    public static class Common
+    {
+        private static string SiteAddress = "";
+
+        public static System.Drawing.Image ResizeImage(string originalFilename, int width)
+        {
+            System.Drawing.Image imgOriginal = System.Drawing.Image.FromFile(originalFilename);
+            return ScaleBySize(imgOriginal, width);            
+        }
+
+        public static System.Drawing.Image ScaleBySize(System.Drawing.Image imgPhoto, int size)
+        {
+            int logoSize = size;
+
+            float sourceWidth = imgPhoto.Width;
+            float sourceHeight = imgPhoto.Height;
+            float destHeight = 0;
+            float destWidth = 0;
+            int sourceX = 0;
+            int sourceY = 0;
+            int destX = 0;
+            int destY = 0;
+
+            // Resize Image to have the height = logoSize/2 or width = logoSize.
+            // Height is greater than width, set Height = logoSize and resize width accordingly
+            if (sourceWidth > (2 * sourceHeight))
+            {
+                destWidth = logoSize;
+                destHeight = (float)(sourceHeight * logoSize / sourceWidth);
+            }
+            else
+            {
+                int h = logoSize / 2;
+                destHeight = h;
+                destWidth = (float)(sourceWidth * h / sourceHeight);
+            }
+            // Width is greater than height, set Width = logoSize and resize height accordingly
+
+            System.Drawing.Bitmap bmPhoto = new System.Drawing.Bitmap((int)destWidth, (int)destHeight,
+                                        System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+            bmPhoto.SetResolution(imgPhoto.HorizontalResolution, imgPhoto.VerticalResolution);
+
+            System.Drawing.Graphics grPhoto = System.Drawing.Graphics.FromImage(bmPhoto);
+            grPhoto.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+
+            grPhoto.DrawImage(imgPhoto,
+                new Rectangle(destX, destY, (int)destWidth, (int)destHeight),
+                new Rectangle(sourceX, sourceY, (int)sourceWidth, (int)sourceHeight),
+                GraphicsUnit.Pixel);
+
+            grPhoto.Dispose();
+
+            return bmPhoto;
+        }
+
+        public static HtmlString FullTextAreaFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression)
+        {
+            string content = "";
+            ModelMetadata data = ModelMetadata.FromLambdaExpression(expression, html.ViewData as ViewDataDictionary<TModel>);
+            if (data.Model != null)
+                content = data.Model.ToString();
+
+            return new HtmlString(
+                html.Telerik().Editor()
+                    .Name(data.PropertyName)
+                    .Value(HttpUtility.HtmlDecode(content))
+                    .Tools(tools => tools.Clear()
+                        .FormatBlock()
+                        .FontName()
+                        .FontSize()
+                        .FontColor()
+                        .BackColor()
+                        .Separator()
+                        .Bold()
+                        .Italic()
+                        .Underline()
+                        .Separator()
+                        .Indent()
+                        .Outdent()
+                        .Separator()
+                        .InsertOrderedList()
+                        .InsertUnorderedList()
+                        .Break()
+                        .JustifyLeft()
+                        .JustifyCenter()
+                        .JustifyRight()
+                        .JustifyFull()
+                        .Separator()
+                        .Subscript()
+                        .Superscript()
+                        .Separator()
+                        .CreateLink()
+                        .Unlink()
+                        .InsertImage()
+                        .Styles(styles => styles.Add("Highlight", "highlight").Add("Code block", "code").Add("Keybinding", "keybinding"))
+                        )
+                    .StyleSheets(styleSheets => styleSheets.Add("~/Content/Admin.css"))
+                    .FileBrowser(t => t.Browse("Browse", "EditorImageBrowser")
+                                         .Thumbnail("Thumbnail", "EditorImageBrowser")
+                                         .Upload("Upload", "EditorImageBrowser")
+                                         .DeleteFile("DeleteFile", "EditorImageBrowser")
+                                         .DeleteDirectory("DeleteDirectory", "EditorImageBrowser")
+                                         .CreateDirectory("CreateDirectory", "EditorImageBrowser")).ToHtmlString());
+        }
+        public static HtmlString HalfSizeFullTextAreaFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression)
+        {
+            string content = "";
+            ModelMetadata data = ModelMetadata.FromLambdaExpression(expression, html.ViewData as ViewDataDictionary<TModel>);
+            if (data.Model != null)
+                content = data.Model.ToString();
+
+            return new HtmlString( "<div style=\"float: left; text-align: left; width: 80%;\">" + 
+                html.Telerik().Editor()
+                    .Name(data.PropertyName)
+                    .Value(HttpUtility.HtmlDecode(content))
+                    .Tools(tools => tools.Clear()
+                        .FormatBlock()
+                        .FontName()
+                        .FontSize()
+                        .FontColor()
+                        .BackColor()
+                        .Separator()
+                        .Bold()
+                        .Italic()
+                        .Underline()
+                        .Separator()
+                        .Indent()
+                        .Outdent()
+                        .Separator()
+                        .InsertOrderedList()
+                        .InsertUnorderedList()
+                        .Break()
+                        .JustifyLeft()
+                        .JustifyCenter()
+                        .JustifyRight()
+                        .JustifyFull()
+                        .Separator()
+                        .Subscript()
+                        .Superscript()
+                        .Separator()
+                        .CreateLink()
+                        .Unlink()
+                        .InsertImage()
+                        .Styles(styles => styles.Add("Highlight", "highlight").Add("Code block", "code").Add("Keybinding", "keybinding"))
+                        )
+                    .HtmlAttributes(new { width = "50%" })
+                    .StyleSheets(styleSheets => styleSheets.Add("~/Content/Admin.css"))
+                    .FileBrowser(t => t.Browse("Browse", "EditorImageBrowser")
+                                         .Thumbnail("Thumbnail", "EditorImageBrowser")
+                                         .Upload("Upload", "EditorImageBrowser")
+                                         .DeleteFile("DeleteFile", "EditorImageBrowser")
+                                         .DeleteDirectory("DeleteDirectory", "EditorImageBrowser")
+                                         .CreateDirectory("CreateDirectory", "EditorImageBrowser")).ToHtmlString() + "</div>");
+        }
+        public static HtmlString SimpleTextAreaFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression)
+        {
+            string content = "";
+            ModelMetadata data = ModelMetadata.FromLambdaExpression(expression, html.ViewData as ViewDataDictionary<TModel>);
+            if (data.Model != null)
+                content = data.Model.ToString();
+
+            return new HtmlString(
+                html.Telerik().Editor()
+                    .Name("Editor")
+                    .Value(content)
+                    .Tools(tools => tools.Clear()
+                        .Bold()
+                        .Italic()
+                        .Underline()
+                        .Separator()
+                        .Indent()
+                        .Outdent()
+                        .Separator()
+                        .InsertOrderedList()
+                        .InsertUnorderedList()
+                        .JustifyLeft()
+                        .JustifyCenter()
+                        .JustifyRight()
+                        .JustifyFull()
+                        .Separator()
+                        .Subscript()
+                        .Superscript()
+                        .Separator()
+                        .CreateLink()
+                        .Unlink()
+                        )
+                    .ToHtmlString());
+        }
+    
+
+        public static MvcHtmlString LinkedInLink(string date, int id, string title)
+        {
+            string link = SiteAddress + "/Entries/" + date + "/" + id.ToString() + "/" + title;
+            string linkedIn = "<script src=\"//platform.linkedin.com/in.js\" type=\"text/javascript\"></script><script type=\"IN/Share\" data-url=\"" + link + "\"></script>";
+
+            return new MvcHtmlString(linkedIn);
+        }
+
+        public static MvcHtmlString GooglePlusLink(string date, int id, string title)
+        {
+            string link = SiteAddress + "/Entries/" + date + "/" + id.ToString() + "/" + title;
+            string gplus = "<div style=\"float: left; width: 42px; overflow: hidden;\"><div class=\"g-plusone\" data-size=\"medium\" data-annotation=\"inline\" data-width=\"120\" data-href=\"" + link + "\"></div></div>";
+
+            return new MvcHtmlString(gplus);
+        }
+
+        public static MvcHtmlString GooglePlusStatic()
+        {
+            return new MvcHtmlString( "<script type=\"text/javascript\">  (function() {    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;    po.src = 'https://apis.google.com/js/plusone.js';    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);  })();</script>" );
+        }
+
+        public static MvcHtmlString FacebookLink(string date, int id, string title)
+        {
+            string link = SiteAddress + "/Entries/" + date + "/" + id.ToString() + "/" + title;
+            link = link.Replace(":", "%3A");
+            link = link.Replace("/", "%2F");
+
+            string fb = "<div style=\"float: left\"><iframe src=\"//www.facebook.com/plugins/like.php?href=" + link + "&amp;send=false&amp;layout=button_count&amp;width=80&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=35\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:80px; height:35px;\" allowTransparency=\"true\"></iframe></div>";
+            return new MvcHtmlString(fb);
+        }
+
+        public static MvcHtmlString TwitterLink(string date, int id, string title, string type)
+        {
+            string link = SiteAddress + "/Entries/" + date + "/" + id.ToString() + "/" + title;
+            string twitter;
+                twitter = "<div style=\"float: left; margin-right: 10px;\"><a href=\"https://twitter.com/share\" class=\"twitter-share-button\" data-url=\"" + link + "\" data-count=\"none\" data-lang=\"en\">Tweet</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=\"//platform.twitter.com/widgets.js\";fjs.parentNode.insertBefore(js,fjs);}}(document,\"script\",\"twitter-wjs\");</script></div>";
+
+
+            return new MvcHtmlString(twitter);
+        }
+        
+        public static MvcHtmlString LabelFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object htmlAttributes, string labelText)
+        {
+            return LabelFor(html, expression, new RouteValueDictionary(htmlAttributes), labelText);
+        }
+
+        public static MvcHtmlString LabelFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IDictionary<string, object> htmlAttributes, string labelText)
+        {
+            ModelMetadata metadata = ModelMetadata.FromLambdaExpression(expression, html.ViewData);
+            string htmlFieldName = ExpressionHelper.GetExpressionText(expression);
+
+            TagBuilder tag = new TagBuilder("label");
+            tag.MergeAttributes(htmlAttributes);
+            tag.Attributes.Add("for", html.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(htmlFieldName));
+            tag.SetInnerText(labelText);
+            return MvcHtmlString.Create(tag.ToString(TagRenderMode.Normal));
+        }
+
+        public static string Urlable(this string text)
+        {
+            text = text.ToLower();
+            text = text.Replace('ö', 'o');
+            text = text.Replace('ő', 'o');
+            text = text.Replace('ó', 'o');
+            text = text.Replace('ü', 'u');
+            text = text.Replace('ú', 'u');
+            text = text.Replace('ű', 'u');
+            text = text.Replace('í', 'i');
+            text = text.Replace('á', 'a');
+            text = text.Replace('é', 'e');
+            text = text.Replace(' ', '_');
+            text = text.Replace('#', '_');
+            text = text.Replace('$', '_');
+            text = text.Replace('.', '_');
+            text = text.Replace('&', '_');
+            text = text.Replace("\"", "");
+
+            return text;
+        }        
+    }
+}

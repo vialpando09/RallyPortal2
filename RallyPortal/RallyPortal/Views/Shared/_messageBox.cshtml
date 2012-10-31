@@ -1,0 +1,24 @@
+﻿@model RallyPortal.MessageType
+@{
+        
+    if (Model == RallyPortal.MessageType.Information)
+    {
+    <div onclick="$(this).fadeOut('slow')" class="Box infoBox">
+        @ViewBag.GlobalHeader @ViewBag.GlobalMessage</div>
+    }
+    else if (Model == RallyPortal.MessageType.Success)
+    {
+    <div onclick="$(this).fadeOut('slow')" class="Box successBox">
+        @ViewBag.GlobalHeader @ViewBag.GlobalMessage</div>
+    }
+    else if (Model == RallyPortal.MessageType.Warning)
+    {
+    <div onclick="$(this).fadeOut('slow')" class="Box warningBox">
+        @ViewBag.GlobalHeader @ViewBag.GlobalMessage</div>
+    }
+    else if (Model == RallyPortal.MessageType.Error)
+    {
+    <div onclick="$(this).fadeOut('slow')" class="Box errorBox">
+        @ViewBag.GlobalHeader @ViewBag.GlobalMessage</div>
+    }
+}

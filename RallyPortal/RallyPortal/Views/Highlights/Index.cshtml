@@ -1,0 +1,58 @@
+﻿@model IEnumerable<RallyPortal.Article>
+@using Telerik.Web.Mvc.UI           
+@using RallyPortal;
+@{
+    ViewBag.Title = "Index";
+    ViewBag.PageTitle = "Highlights";
+    var published = Model.Where(m => m.Published);
+    var notPublished = Model.Where(m => !m.Published);   
+}
+<div class="content_pad">
+    @Html.ActionLinkButton(Url, "Create", "Highlights", null, "Create")
+    <h3>Not published</h3>
+    @(Html.Telerik().Grid(notPublished)
+        .Name("Grid")
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.Title).Title("Title");
+            columns.Bound(o => o.AuthorName).Title("Author");
+            columns.Bound(o => o.PublishedDate).Title("Creation Time");
+            columns.Bound(o => o.LastModifiedDate).Title("Last Modification");
+            columns.Template(
+                @<text>
+    @Html.ActionLinkButton(Url, "Edit", "Highlights", new { id = item.Id },"Edit")
+    @Html.ActionLinkButton(Url, "Delete", "Highlights", new { id = item.Id }, "Delete")
+    @Html.ActionLinkButton(Url, "Details", "Highlights", new { id = item.Id }, "Details")
+    @Html.ActionLinkButton(Url, "Publish", "Highlights", new { id = item.Id }, "Publish")
+    </text>
+            ).Title("").Width(400);
+        })
+        .Scrollable(scrolling => scrolling.Enabled(false))
+        .Sortable(sorting => sorting.Enabled(true))
+        .Pageable(paging => paging.Enabled(true))
+        .Footer(true)
+)
+    <h3>Published</h3>
+    @(Html.Telerik().Grid(published)
+        .Name("Grid2")
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.Title).Title("Title");
+            columns.Bound(o => o.AuthorName).Title("Author");
+            columns.Bound(o => o.PublishedDate).Title("Creation Time");
+            columns.Bound(o => o.LastModifiedDate).Title("Last Modification");
+            columns.Template(
+                @<text>
+    @Html.ActionLinkButton(Url, "Edit", "Highlights", new { id = item.Id },"Edit")
+    @Html.ActionLinkButton(Url, "Delete", "Highlights", new { id = item.Id }, "Delete")
+    @Html.ActionLinkButton(Url, "Details", "Highlights", new { id = item.Id }, "Details")
+    @Html.ActionLinkButton(Url, "Unpublish", "Highlights", new { id = item.Id }, "Unpublish")
+    </text>
+            ).Title("").Width(400);
+        })
+        .Scrollable(scrolling => scrolling.Enabled(false))
+        .Sortable(sorting => sorting.Enabled(true))
+        .Pageable(paging => paging.Enabled(true))
+        .Footer(true)
+)
+</div>

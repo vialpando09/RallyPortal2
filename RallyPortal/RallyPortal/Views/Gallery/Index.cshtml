@@ -1,0 +1,69 @@
+﻿@model IEnumerable<RallyPortal.Gallery>
+@using Telerik.Web.Mvc.UI           
+@using RallyPortal;
+@{
+    ViewBag.Title = "Index";
+    ViewBag.PageTitle = "Galleries";
+    var published = Model.Where(m => m.Published);
+    var notPublished = Model.Where(m => !m.Published);   
+}
+
+@helper createPath(GalleryCategory category)
+{
+    string path = "";
+    while(category != null)
+    {
+        path = "/" + category.Title + path;
+        category = category.Parent;
+    }
+    <text>@path</text>
+}
+<div class="content_pad">
+    @Html.ActionLinkButton(Url, "Create", "Gallery", null, "Create")
+    <h3>Not published</h3>
+    @(Html.Telerik().Grid(notPublished)
+        .Name("Grid")
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.Title).Title("Title");
+            columns.Bound(o => o.Description).Title("Descrption");
+            columns.Template(@<text>@createPath(item.Category)</text>).Title("Category");
+            columns.Template(
+                @<text>
+    @Html.ActionLinkButton(Url, "Edit", "Gallery", new { id = item.Id },"Edit")
+    @Html.ActionLinkButton(Url, "Delete", "Gallery", new { id = item.Id }, "Delete")
+    @Html.ActionLinkButton(Url, "Details", "Gallery", new { id = item.Id }, "Details")
+    @Html.ActionLinkButton(Url, "Publish", "Gallery", new { id = item.Id }, "Publish")
+    </text>
+            ).Title("").Width(400);
+        })
+        .Scrollable(scrolling => scrolling.Enabled(false))
+        .Sortable(sorting => sorting.Enabled(true))
+        .Sortable(sorting => sorting.OrderBy(model => model.Add("Category")))
+        .Pageable(paging => paging.Enabled(true))
+        .Footer(true)
+)
+    <h3>Published</h3>
+    @(Html.Telerik().Grid(published)
+        .Name("Grid2")
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.Title).Title("Title");
+            columns.Bound(o => o.Description).Title("Descrption");
+            columns.Template(@<text>@createPath(item.Category)</text>).Title("Category");
+            columns.Template(
+                @<text>
+    @Html.ActionLinkButton(Url, "Edit", "Gallery", new { id = item.Id },"Edit")
+    @Html.ActionLinkButton(Url, "Delete", "Gallery", new { id = item.Id }, "Delete")
+    @Html.ActionLinkButton(Url, "Details", "Gallery", new { id = item.Id }, "Details")
+    @Html.ActionLinkButton(Url, "Unpublish", "Gallery", new { id = item.Id }, "Unpublish")
+    </text>
+            ).Title("").Width(400);
+        })
+        .Scrollable(scrolling => scrolling.Enabled(false))
+        .Sortable(sorting => sorting.Enabled(true))
+        .Sortable(sorting => sorting.OrderBy(model => model.Add("Category")))
+        .Pageable(paging => paging.Enabled(true))
+        .Footer(true)
+)
+</div>

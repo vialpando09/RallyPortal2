@@ -1,0 +1,11 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+@using RallyPortal;
+@{
+    ViewBag.Title = "Error";
+    ViewBag.GlobalMessageType = MessageType.Error;
+    ViewBag.GlobalHeader = "Ooops, this is an error message!";
+    ViewBag.GlobalMessage = "Sorry, an error occurred while processing your request.";
+}
+
+@Html.Partial("_messageBox", (RallyPortal.MessageType)ViewBag.GlobalMessageType)
+@Html.ActionLinkButton(Url.Action("Index", "Home", null), "Go back to the main page")

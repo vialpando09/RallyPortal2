@@ -1,0 +1,462 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="ModelStoreContainer">
+    <EntitySet Name="ArticleSet" EntityType="Model.Store.ArticleSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CommentSet" EntityType="Model.Store.CommentSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="TeamSet" EntityType="Model.Store.TeamSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ImageSet" EntityType="Model.Store.ImageSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GallerySet" EntityType="Model.Store.GallerySet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GalleryCategorySet" EntityType="Model.Store.GalleryCategorySet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ArticleSet_Highlights" EntityType="Model.Store.ArticleSet_Highlights" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="ArticleComment" Association="Model.Store.ArticleComment">
+      <End Role="Comment" EntitySet="CommentSet" />
+      <End Role="Article" EntitySet="ArticleSet" />
+    </AssociationSet>
+    <AssociationSet Name="GalleryImage" Association="Model.Store.GalleryImage">
+      <End Role="Gallery" EntitySet="GallerySet" />
+      <End Role="Image" EntitySet="ImageSet" />
+    </AssociationSet>
+    <AssociationSet Name="GalleryCategoryGallery" Association="Model.Store.GalleryCategoryGallery">
+      <End Role="GalleryCategory" EntitySet="GalleryCategorySet" />
+      <End Role="Gallery" EntitySet="GallerySet" />
+    </AssociationSet>
+    <AssociationSet Name="GalleryCategoryGalleryCategory" Association="Model.Store.GalleryCategoryGalleryCategory">
+      <End Role="GalleryCategory" EntitySet="GalleryCategorySet" />
+      <End Role="GalleryCategory1" EntitySet="GalleryCategorySet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Highlights_inherits_Article" Association="Model.Store.FK_Highlights_inherits_Article">
+      <End Role="Article" EntitySet="ArticleSet" />
+      <End Role="Highlights" EntitySet="ArticleSet_Highlights" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="ArticleSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Content" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PublishedDate" Type="datetime" Nullable="false" />
+    <Property Name="LastModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="Published" Type="bit" Nullable="false" />
+    <Property Name="ImageUrl" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="AuthorName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="AuthorEmail" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CommentSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Content" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PostDate" Type="datetime" Nullable="false" />
+    <Property Name="AuthorName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="AuthorEmail" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Article_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TeamSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TeamName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DriverName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CoDriverName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="TeamImageUrl" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DriverImageUrl" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CoDriverImageUrl" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="TeamSummary" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DriverSummary" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CoDriverSummary" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ImageSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="GalleryId" Type="int" Nullable="false" />
+    <Property Name="ImageId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="GallerySet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Published" Type="bit" Nullable="false" />
+    <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="GalleryCategoryId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="GalleryCategorySet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="GalleryCategoryId" Type="int" Nullable="false" />
+    <Property Name="GalleryCategoryId1" Type="int" Nullable="true" />
+  </EntityType>
+  <EntityType Name="ArticleSet_Highlights">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="VideoUrl" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Id" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="ArticleComment">
+    <End Role="Comment" Type="Model.Store.CommentSet" Multiplicity="*" />
+    <End Role="Article" Type="Model.Store.ArticleSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Article">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Comment">
+        <PropertyRef Name="Article_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="GalleryImage">
+    <End Role="Gallery" Type="Model.Store.GallerySet" Multiplicity="1" />
+    <End Role="Image" Type="Model.Store.ImageSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Gallery">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Image">
+        <PropertyRef Name="GalleryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="GalleryCategoryGallery">
+    <End Role="GalleryCategory" Type="Model.Store.GalleryCategorySet" Multiplicity="1" />
+    <End Role="Gallery" Type="Model.Store.GallerySet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GalleryCategory">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Gallery">
+        <PropertyRef Name="GalleryCategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="GalleryCategoryGalleryCategory">
+    <End Role="GalleryCategory" Type="Model.Store.GalleryCategorySet" Multiplicity="0..1" />
+    <End Role="GalleryCategory1" Type="Model.Store.GalleryCategorySet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GalleryCategory">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="GalleryCategory1">
+        <PropertyRef Name="GalleryCategoryId1" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Highlights_inherits_Article">
+    <End Role="Article" Type="Model.Store.ArticleSet" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Highlights" Type="Model.Store.ArticleSet_Highlights" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Article">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Highlights">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+        <EntityContainer Name="ModelContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ArticleSet" EntityType="Model.Article" />
+          <EntitySet Name="CommentSet" EntityType="Model.Comment" />
+          <AssociationSet Name="ArticleComment" Association="Model.ArticleComment">
+            <End EntitySet="CommentSet" Role="Comment" />
+            <End EntitySet="ArticleSet" Role="Article" />
+          </AssociationSet>
+          <EntitySet Name="TeamSet" EntityType="Model.Team" />
+          <EntitySet Name="ImageSet" EntityType="Model.Image" />
+          <EntitySet Name="GallerySet" EntityType="Model.Gallery" />
+          <AssociationSet Name="GalleryImage" Association="Model.GalleryImage">
+            <End EntitySet="GallerySet" Role="Gallery" />
+            <End EntitySet="ImageSet" Role="Image" />
+          </AssociationSet>
+          <EntitySet Name="GalleryCategorySet" EntityType="Model.GalleryCategory" />
+          <AssociationSet Name="GalleryCategoryGallery" Association="Model.GalleryCategoryGallery">
+            <End Role="GalleryCategory" EntitySet="GalleryCategorySet" />
+            <End Role="Gallery" EntitySet="GallerySet" />
+          </AssociationSet>
+          <AssociationSet Name="GalleryCategoryGalleryCategory" Association="Model.GalleryCategoryGalleryCategory">
+            <End Role="GalleryCategory" EntitySet="GalleryCategorySet" />
+            <End Role="GalleryCategory1" EntitySet="GalleryCategorySet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Article">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+          <Property Name="Title" Nullable="false" Type="String" />
+          <Property Name="Content" Nullable="false" Type="String" />
+          <Property Name="PublishedDate" Nullable="false" Type="DateTime" />
+          <Property Name="LastModifiedDate" Nullable="false" Type="DateTime" />
+          <Property Name="Published" Nullable="false" Type="Boolean" />
+          <NavigationProperty Name="Comment" Relationship="Model.ArticleComment" FromRole="Article" ToRole="Comment" />
+          <Property Name="ImageUrl" Nullable="false" Type="String" />
+          <Property Type="String" Name="AuthorName" Nullable="false" />
+          <Property Type="String" Name="AuthorEmail" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+          <Property Name="Content" Nullable="false" Type="String" />
+          <Property Name="PostDate" Nullable="false" Type="DateTime" />
+          <NavigationProperty Name="Article" Relationship="Model.ArticleComment" FromRole="Comment" ToRole="Article" />
+          <Property Type="String" Name="AuthorName" Nullable="false" />
+          <Property Type="String" Name="AuthorEmail" Nullable="false" />
+        </EntityType>
+        <Association Name="ArticleComment">
+          <End Type="Model.Comment" Multiplicity="*" Role="Comment" />
+          <End Type="Model.Article" Multiplicity="1" Role="Article" />
+        </Association>
+        <EntityType Name="Team">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+          <Property Name="TeamName" Nullable="false" Type="String" />
+          <Property Name="DriverName" Nullable="false" Type="String" />
+          <Property Name="CoDriverName" Nullable="false" Type="String" />
+          <Property Name="TeamImageUrl" Nullable="false" Type="String" />
+          <Property Name="DriverImageUrl" Nullable="false" Type="String" />
+          <Property Name="CoDriverImageUrl" Nullable="false" Type="String" />
+          <Property Type="String" Name="TeamSummary" Nullable="false" />
+          <Property Type="String" Name="DriverSummary" Nullable="false" />
+          <Property Type="String" Name="CoDriverSummary" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Image">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+          <Property Name="Title" Nullable="false" Type="String" />
+          <Property Name="Description" Nullable="false" Type="String" />
+          <NavigationProperty Name="Gallery" Relationship="Model.GalleryImage" FromRole="Image" ToRole="Gallery" />
+          <Property Name="GalleryId" Nullable="false" Type="Int32" />
+          <Property Type="Int32" Name="ImageId" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Gallery">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+          <Property Name="Published" Nullable="false" Type="Boolean" />
+          <Property Name="Title" Nullable="false" Type="String" />
+          <Property Name="Description" Nullable="false" Type="String" />
+          <NavigationProperty Name="Images" Relationship="Model.GalleryImage" FromRole="Gallery" ToRole="Image" />
+          <NavigationProperty Name="Category" Relationship="Model.GalleryCategoryGallery" FromRole="Gallery" ToRole="GalleryCategory" />
+          <Property Type="Int32" Name="GalleryCategoryId" Nullable="false" />
+        </EntityType>
+        <Association Name="GalleryImage">
+          <End Type="Model.Gallery" Multiplicity="1" Role="Gallery" />
+          <End Type="Model.Image" Multiplicity="*" Role="Image" />
+          <ReferentialConstraint>
+            <Principal Role="Gallery">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Image">
+              <PropertyRef Name="GalleryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Highlights" BaseType="Model.Article">
+          <Property Name="VideoUrl" Nullable="false" Type="String" />
+        </EntityType>
+        <EntityType Name="GalleryCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Title" Nullable="false" />
+          <Property Type="Int32" Name="GalleryCategoryId" Nullable="false" />
+          <NavigationProperty Name="Galleries" Relationship="Model.GalleryCategoryGallery" FromRole="GalleryCategory" ToRole="Gallery" />
+          <NavigationProperty Name="SubCategories" Relationship="Model.GalleryCategoryGalleryCategory" FromRole="GalleryCategory" ToRole="GalleryCategory1" />
+          <NavigationProperty Name="Parent" Relationship="Model.GalleryCategoryGalleryCategory" FromRole="GalleryCategory1" ToRole="GalleryCategory" />
+          <Property Type="Int32" Name="GalleryCategoryId1" Nullable="true" />
+        </EntityType>
+        <Association Name="GalleryCategoryGallery">
+          <End Type="Model.GalleryCategory" Role="GalleryCategory" Multiplicity="1" />
+          <End Type="Model.Gallery" Role="Gallery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GalleryCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Gallery">
+              <PropertyRef Name="GalleryCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GalleryCategoryGalleryCategory">
+          <End Type="Model.GalleryCategory" Role="GalleryCategory" Multiplicity="0..1" />
+          <End Type="Model.GalleryCategory" Role="GalleryCategory1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GalleryCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GalleryCategory1">
+              <PropertyRef Name="GalleryCategoryId1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="ModelContainer">
+    <EntitySetMapping Name="ArticleSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.Article)">
+        <MappingFragment StoreEntitySet="ArticleSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="PublishedDate" ColumnName="PublishedDate" />
+          <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+          <ScalarProperty Name="Published" ColumnName="Published" />
+          <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+          <ScalarProperty Name="AuthorName" ColumnName="AuthorName" />
+          <ScalarProperty Name="AuthorEmail" ColumnName="AuthorEmail" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(Model.Highlights)">
+        <MappingFragment StoreEntitySet="ArticleSet_Highlights">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="VideoUrl" ColumnName="VideoUrl" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CommentSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.Comment)">
+        <MappingFragment StoreEntitySet="CommentSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="PostDate" ColumnName="PostDate" />
+          <ScalarProperty Name="AuthorName" ColumnName="AuthorName" />
+          <ScalarProperty Name="AuthorEmail" ColumnName="AuthorEmail" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TeamSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.Team)">
+        <MappingFragment StoreEntitySet="TeamSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="TeamName" ColumnName="TeamName" />
+          <ScalarProperty Name="DriverName" ColumnName="DriverName" />
+          <ScalarProperty Name="CoDriverName" ColumnName="CoDriverName" />
+          <ScalarProperty Name="TeamImageUrl" ColumnName="TeamImageUrl" />
+          <ScalarProperty Name="DriverImageUrl" ColumnName="DriverImageUrl" />
+          <ScalarProperty Name="CoDriverImageUrl" ColumnName="CoDriverImageUrl" />
+          <ScalarProperty Name="TeamSummary" ColumnName="TeamSummary" />
+          <ScalarProperty Name="DriverSummary" ColumnName="DriverSummary" />
+          <ScalarProperty Name="CoDriverSummary" ColumnName="CoDriverSummary" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ImageSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.Image)">
+        <MappingFragment StoreEntitySet="ImageSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="GalleryId" ColumnName="GalleryId" />
+          <ScalarProperty Name="ImageId" ColumnName="ImageId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GallerySet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.Gallery)">
+        <MappingFragment StoreEntitySet="GallerySet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Published" ColumnName="Published" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="GalleryCategoryId" ColumnName="GalleryCategoryId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GalleryCategorySet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.GalleryCategory)">
+        <MappingFragment StoreEntitySet="GalleryCategorySet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="GalleryCategoryId" ColumnName="GalleryCategoryId" />
+          <ScalarProperty Name="GalleryCategoryId1" ColumnName="GalleryCategoryId1" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="ArticleComment" TypeName="Model.ArticleComment" StoreEntitySet="CommentSet">
+      <EndProperty Name="Article">
+        <ScalarProperty Name="Id" ColumnName="Article_Id" />
+      </EndProperty>
+      <EndProperty Name="Comment">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram Name="Model" >
+        <EntityTypeShape EntityType="Model.Article" PointX="0.75" PointY="0.5" Width="1.5" Height="2.7494921874999996" />
+        <EntityTypeShape EntityType="Model.Comment" PointX="0.75" PointY="4" Width="1.5" Height="2.1725878906249996" />
+        <AssociationConnector Association="Model.ArticleComment">
+          <ConnectorPoint PointX="1.1018898891759426" PointY="3.625" />
+          <ConnectorPoint PointX="1.1018898891759426" PointY="3.2494921874999996" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="Model.Team" PointX="2.875" PointY="0.5" Width="1.5" Height="2.3648893229166665" />
+        <EntityTypeShape EntityType="Model.Image" PointX="4.875" PointY="3.25" Width="1.5" Height="2.1725878906249996" />
+        <EntityTypeShape EntityType="Model.Gallery" PointX="4.875" PointY="0.5" Width="1.5" Height="1.787985026041667" />
+        <AssociationConnector Association="Model.GalleryImage">
+          <ConnectorPoint PointX="5.625" PointY="2.4802864583333335" />
+          <ConnectorPoint PointX="5.625" PointY="3.25" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="Model.Highlights" PointX="2.875" PointY="4.125" Width="1.5" Height="1.2110807291666665" />
+        <InheritanceConnector EntityType="Model.Highlights">
+          <ConnectorPoint PointX="1.9417247784091523" PointY="3.2494921874999996" />
+          <ConnectorPoint PointX="1.9417247784091523" PointY="3.4330000000000007" />
+          <ConnectorPoint PointX="3.625" PointY="3.4330000000000007" />
+          <ConnectorPoint PointX="3.625" PointY="3.625" />
+        </InheritanceConnector>
+        <EntityTypeShape EntityType="Model.GalleryCategory" Width="1.5" PointX="7" PointY="0.5" />
+        <AssociationConnector Association="Model.GalleryCategoryGallery" />
+        <AssociationConnector Association="Model.GalleryCategoryGalleryCategory" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

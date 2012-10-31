@@ -1,0 +1,96 @@
+﻿@model RallyPortal.Gallery
+@using Telerik.Web.Mvc.UI
+@using RallyPortal;
+@{
+    ViewBag.Title = "Create";
+    ViewBag.PageTitle = "Gallery";
+}
+
+@section AdditionalScripts{
+    <script type="text/javascript">
+        var nextImageId = 0;
+    </script>
+
+}
+
+@section AdditionScriptsEnd{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.5.2.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.visualize.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/widgets.js")"></script>
+}
+@section AdditionalOnready{
+jQuery('.accordion_container').accordion();
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm("Create", "Gallery", FormMethod.Post, new { @Class = "form label-inline uniform" }))
+{
+    @Html.ValidationSummary(true)
+    <input type="hidden" name="Published" id="Published" value="false" />
+    <div class="content_pad">
+        <h3>Create</h3>
+        <div class="accordion_container" style="min-height: 100%;">            
+            <h2 class="accordion_panel active">
+                <a href="#">Settings</a></h2>
+            <div class="accordion_content" style="display: block;">
+                <div class="field" style="margin-top: 20px; padding: 0 40px;">
+                    @Html.LabelFor(model => model.Title, "Title")
+                    @Html.TextBoxFor(model => model.Title, new { size = "50", placeholder = "Title of the gallery" })
+                    @Html.ValidationMessageFor(model => model.Title)
+                </div>                
+                <div class="field" style="margin-top: 20px; padding: 0 40px;">
+                    @Html.Label("path", "Path")
+                    @Html.TextBox("path", null, new { size = "50", placeholder = "example: /TopCategory/SubCategory/.. etc." })
+                </div> 
+                <div class="field" style="margin-top: 20px; padding: 0 40px;">
+                    @Html.LabelFor(model => model.Description, "Description")
+                    @Html.TextBoxFor(model => model.Description, new { size = "50", placeholder = "Description of the gallery" })
+                    @Html.ValidationMessageFor(model => model.Description)
+                </div>     
+            </div>
+             <h2 class="accordion_panel">
+                <a href="#">Images</a></h2>
+            <div class="accordion_content" style="display: block;">
+                <div class="field" style="margin-top: 20px; padding: 0 40px;">
+                    @(Html.Telerik().Upload()
+                        .Name("attachments")
+                        .Multiple(true)
+                        .Async(async => async
+                            .Save("SaveTempGalleryImage", "Upload")
+                            .Remove("RemoveTempGalleryImage", "Upload")
+                            .AutoUpload(true)
+                        )
+                        .ClientEvents(events => events
+                            .OnSuccess(
+                                @<text>
+                                    function(e) {
+                                        if(e.operation == "upload"){
+                                            $(e.files).each(function (i) {
+                                                var next = nextImageId++;
+                                                var htmlContent = "<div id=\""+this.name.replace(".", "_").replace("#", "_")+"\" class=\"image-frame green-frame\"><input type=\"hidden\" value=\""+ next +"\" name=\"ids\" /><input type=\"hidden\" value=\""+ this.name +"\" name=\"filenames\" /><div class=\"image\"><img src=\"@Url.Content("~/Images/Galleries/tempGallery/")"+this.name+"\" alt=\"\" /></div><div class=\"title\"><input type=\"text\" name=\"titles\" placeholder=\"Title\" value=\"\"><div class=\"description\"><input type=\"text\" name=\"descriptions\" placeholder=\"Descrption\" value=\"\"/></div></div>";
+                                                $("#images").append(htmlContent);
+                                            });
+                                        }
+                                        else {
+                                            $(e.files).each(function (i) {
+                                                var element = "#" + this.name.replace(".", "_").replace("#", "_");
+                                                $(element).remove();
+                                            }); 
+                                        }                                       
+                                    }
+                                </text>
+                            )
+                        )
+                    )
+                    <div id="images">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content_pad">
+        <input type="submit" value="Save" />
+        @Html.ActionLinkButton(Url, "Index", "Gallery", null, "Back to list")
+    </div>
+}

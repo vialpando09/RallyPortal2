@@ -1,0 +1,45 @@
+﻿@model RallyPortal.Team
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Team</legend>
+
+    <div class="display-label">TeamName</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TeamName)
+    </div>
+
+    <div class="display-label">DriverName</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DriverName)
+    </div>
+
+    <div class="display-label">CoDriverName</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CoDriverName)
+    </div>
+
+    <div class="display-label">TeamImageUrl</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TeamImageUrl)
+    </div>
+
+    <div class="display-label">DriverImageUrl</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DriverImageUrl)
+    </div>
+
+    <div class="display-label">CoDriverImageUrl</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CoDriverImageUrl)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,30 @@
+﻿@model IEnumerable<RallyPortal.Team>
+@using Telerik.Web.Mvc.UI           
+@using RallyPortal;
+@{
+    ViewBag.Title = "Index";
+    ViewBag.PageTitle = "Teams"; 
+}
+<div class="content_pad">
+    @Html.ActionLinkButton(Url, "Create", "Team", null, "Create")
+    @(Html.Telerik().Grid(Model)
+        .Name("Grid")
+        .Columns(columns =>
+        {
+            columns.Bound(o => o.TeamName).Title("Team Name");
+            columns.Bound(o => o.DriverName).Title("Driver Name");
+            columns.Bound(o => o.CoDriverName).Title("Co-Driver Name");
+            columns.Template(
+                @<text>
+    @Html.ActionLinkButton(Url, "Edit", "Team", new { id = item.Id },"Edit")
+    @Html.ActionLinkButton(Url, "Delete", "Team", new { id = item.Id }, "Delete")
+    @Html.ActionLinkButton(Url, "Details", "Team", new { id = item.Id }, "Details")
+    </text>
+            ).Title("").Width(400);
+        })
+        .Scrollable(scrolling => scrolling.Enabled(false))
+        .Sortable(sorting => sorting.Enabled(true))
+        .Pageable(paging => paging.Enabled(true))
+        .Footer(true)
+)
+</div>
