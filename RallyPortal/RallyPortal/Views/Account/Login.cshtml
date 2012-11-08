@@ -4,19 +4,23 @@
     ViewBag.Title = "Log in";
 }
 
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-</hgroup>
+@section featured {
+    @Html.Partial("_featured", new RallyPortal.Models.FeaturedData { Title = "Create a new account", ImageUrl = "~/Images/login.jpg" })
+}
+
+<div class="title main-title">
+    Log <span>in</span>
+</div>
 
 <section id="loginForm">
-<h2>Use a local account to log in.</h2>
+<h4>Use a local account to log in.</h4>
 @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
     <fieldset>
         <legend>Log in Form</legend>
-        <ol>
+        <ul>
             <li>
                 @Html.LabelFor(m => m.UserName)
                 @Html.TextBoxFor(m => m.UserName)
@@ -31,7 +35,7 @@
                 @Html.CheckBoxFor(m => m.RememberMe)
                 @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
             </li>
-        </ol>
+        </ul>
         <input type="submit" value="Log in" />
     </fieldset>
     <p>
@@ -41,7 +45,7 @@
 </section>
 
 <section class="social" id="socialLoginForm">
-    <h2>Use another service to log in.</h2>
+    <h4>Use another service to log in.</h4>
     @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
 </section>
 

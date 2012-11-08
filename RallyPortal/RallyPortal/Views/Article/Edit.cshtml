@@ -26,12 +26,13 @@ jQuery('.accordion_container').accordion();
 @using (Html.BeginForm("Edit", "Article", FormMethod.Post, new { @Class = "form label-inline uniform" }))
 {
     @Html.ValidationSummary(true)
-    <input type="hidden" name="ImageUrl" id="ImageUrl" value="" />
+    <input type="hidden" name="PublishedDate" id="PublishedDate" value="@Model.PublishedDate" />
+    <input type="hidden" name="ImageUrl" id="ImageUrl" value="@Model.ImageUrl" />
     <input type="hidden" name="AuthorName" id="AuthorName" value="@Model.AuthorName" />
     <input type="hidden" name="AuthorEmail" id="AuthorEmail" value="@Model.AuthorEmail" />
     <div class="content_pad">
         <h3>Create</h3>
-        <div class="accordion_container" style="min-height: 100%;">            
+        <div class="accordion_container" style="min-height: 100%;">
             <h2 class="accordion_panel active">
                 <a href="#">Settings</a></h2>
             <div class="accordion_content" style="display: block;">
@@ -39,7 +40,7 @@ jQuery('.accordion_container').accordion();
                     @Html.LabelFor(model => model.Title, "Title")
                     @Html.TextBoxFor(model => model.Title, new { size = "50" })
                     @Html.ValidationMessageFor(model => model.Title)
-                </div>                
+                </div>
                 <div class="field" style="margin-top: 20px; padding: 0 40px;">
                     @Html.LabelFor(model => model.ImageUrl, "Image")
                     @(Html.Telerik().Upload()
@@ -53,27 +54,30 @@ jQuery('.accordion_container').accordion();
                         .ClientEvents(events => events
                             .OnSuccess(
                                 @<text>
-                                    function(e) {
-                                        if(e.operation == "upload")
-                                            $("#showFeaturedImage").attr('src', "@Url.Content("~/Images/temp")");
+                    function(e) {
+                                        if(e.operation == "upload"){
+                                            var str = '@Url.Action("GetPhotoThumbnail", new { path = "~/Images/temp", width = 400 })';
+                                            $("#showFeaturedImage").attr('src', str.replace('&amp;', '&'));
+                                        }
                                         else
-                                            $("#showFeaturedImage").attr('src', "@Url.Content("~/Images/no_image.jpg")");
+                                            $("#showFeaturedImage").attr('src', '@Url.Content("~/Images/no_image.jpg")');
                                     }
                                 </text>
                             )
                         )
-                    )                    
+                    )
                     <div>
-                        <img src="@Url.Content(Model.ImageUrl)" alt="" id="showFeaturedImage" />                        
+                        <img src="@Url.Action("GetPhotoThumbnail",
+     new { path = Model.ImageUrl, width = 400 })" alt="" id="showFeaturedImage" />
                     </div>
                 </div>
             </div>
-             <h2 class="accordion_panel">
+            <h2 class="accordion_panel">
                 <a href="#">Content</a></h2>
             <div class="accordion_content" style="display: block;">
                 <div class="field" style="margin-top: 20px; padding: 0 40px;">
-                   @Html.FullTextAreaFor(model => model.Content)
-                   @Html.ValidationMessageFor(model => model.Content)
+                    @Html.FullTextAreaFor(model => model.Content)
+                    @Html.ValidationMessageFor(model => model.Content)
                 </div>
             </div>
         </div>

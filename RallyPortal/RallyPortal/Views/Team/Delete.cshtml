@@ -1,48 +1,87 @@
 ﻿@model RallyPortal.Team
-
+@using RallyPortal
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Details";
 }
 
-<h2>Delete</h2>
-
-<h3>Are you sure you want to delete this?</h3>
-<fieldset>
-    <legend>Team</legend>
-
-    <div class="display-label">TeamName</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.TeamName)
-    </div>
-
-    <div class="display-label">DriverName</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.DriverName)
-    </div>
-
-    <div class="display-label">CoDriverName</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.CoDriverName)
-    </div>
-
-    <div class="display-label">TeamImageUrl</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.TeamImageUrl)
-    </div>
-
-    <div class="display-label">DriverImageUrl</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.DriverImageUrl)
-    </div>
-
-    <div class="display-label">CoDriverImageUrl</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.CoDriverImageUrl)
-    </div>
-</fieldset>
-@using (Html.BeginForm()) {
-    <p>
-        <input type="submit" value="Delete" /> |
-        @Html.ActionLink("Back to List", "Index")
-    </p>
+@section featured {
+    @Html.Partial("_featured", new RallyPortal.Models.FeaturedData { ImageUrl = Model.TeamImageUrl, Title = "Team: " + Model.TeamName + " Driver: " + Model.DriverName + " Co-Driver: " + Model.CoDriverName })
 }
+
+
+<div onclick="$(this).fadeOut('slow')" class="Box warningBox">
+    Are you sure you want to delete this?
+</div>
+<div class="delete">
+    @using (Html.BeginForm())
+    {
+        <input type="submit" value="Yes, delete it!" />
+        @Html.ActionLinkButton(Url.Action("Index"), "No, back to list!")
+    }
+</div>
+<div class="title main-title">
+    team <span>details</span>
+</div>
+
+<div class="entry">
+    <div class="inner1">
+        <div class="entry-image" style="background-image: url(@Url.Action("GetPhotoThumbnail",
+     new { path = Model.TeamImageUrl, width = 701 }));">
+        </div>
+        <div class="entry-title">Team - @Model.TeamName</div>
+    </div>
+    <div class="inner5">
+        <p>@Html.Raw(HttpUtility.HtmlDecode(Model.TeamSummary))</p>
+    </div>
+    <div class="inner2">
+        <div class="inner3">
+            &laquo;
+        </div>
+        <div class="inner4">
+            &raquo;
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="entry">
+    <div class="inner1">
+        <div class="entry-image" style="background-image: url(@Url.Action("GetPhotoThumbnail",
+     new { path = Model.DriverImageUrl, width = 701 }));">
+        </div>
+        <div class="entry-title">Driver - @Model.DriverName</div>
+    </div>
+    <div class="inner5">
+        <p>@Html.Raw(HttpUtility.HtmlDecode(Model.DriverSummary))</p>
+    </div>
+    <div class="inner2">
+        <div class="inner3">
+            &laquo;
+        </div>
+        <div class="inner4">
+            &raquo;
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="entry">
+    <div class="inner1">
+        <div class="entry-image" style="background-image: url(@Url.Action("GetPhotoThumbnail",
+     new { path = Model.CoDriverImageUrl, width = 701 }));">
+        </div>
+        <div class="entry-title">Co-Driver - @Model.CoDriverName</div>
+    </div>
+    <div class="inner5">
+        <p>@Html.Raw(HttpUtility.HtmlDecode(Model.CoDriverSummary))</p>
+    </div>
+    <div class="inner2">
+        <div class="inner3">
+            &laquo;           
+        </div>
+        <div class="inner4">
+            &raquo;
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>

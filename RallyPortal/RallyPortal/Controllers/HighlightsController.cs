@@ -13,6 +13,47 @@ namespace RallyPortal.Controllers
     [Authorize(Roles = "Administrator, SuperAdministrator")]
     public class HighlightsController : BaseController
     {
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult Comment(int id, string message)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                Article article = db.ArticleSet.Find(id);
+                article.Comment.Add(new Comment { AuthorEmail = User.Identity.Name, AuthorName = User.Identity.Name, PostDate = DateTime.Now, Content = message });
+                db.SaveChanges();
+
+                SendMessage(MessageType.Success, "Your comment has been posted.");
+            }
+            else
+            {
+                SendMessage(MessageType.Error, "You cannot send comment.Please log in first!");
+            }
+            return RedirectToAction("Details", new { id = id });
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult DeleteComment(int articleId, int commentId)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                Comment comment = db.CommentSet.Find(commentId); 
+                if (comment.AuthorName == User.Identity.Name || User.IsInRole("Administrator") || User.IsInRole("SuperAdministrator"))
+                {
+                    db.CommentSet.Remove(comment);
+                    db.SaveChanges();
+
+                    SendMessage(MessageType.Success, "Your comment has been deleted.");
+                }
+                else
+                {
+                    SendMessage(MessageType.Error, "You cannot delete this comment!");
+                }
+            }
+            return RedirectToAction("Details", new { id = articleId });
+        }
+
         //
         // GET: /Highlights/
 
@@ -24,11 +65,17 @@ namespace RallyPortal.Controllers
         //
         // GET: /Highlights/Details/5
 
-        public ViewResult Details(int id)
+        [AllowAnonymous()]
+        public ActionResult Details(int id)
         {
             Article article = db.ArticleSet.Find(id);
             if (!(article is Highlights))
-                return null;
+                return new HttpStatusCodeResult(404);
+
+            if (!article.Published && !User.IsInRole("Administrator") && !User.IsInRole("SuperAdministrator"))
+            {
+                return new HttpStatusCodeResult(404);
+            }
 
             return View(article);
         }
@@ -38,8 +85,17 @@ namespace RallyPortal.Controllers
 
         public ActionResult Create()
         {
-            (new UploadController()).DeleteFile(Server.MapPath("~/Images/temp"));
+            DeleteTempFiles();
             return View();
+        }
+
+        private void DeleteTempFiles()
+        {
+            var physicalPath = Server.MapPath("~/Images/temp");
+            if (System.IO.File.Exists(physicalPath))
+            {
+                System.IO.File.Delete(physicalPath);
+            }
         }
 
         //
@@ -51,25 +107,14 @@ namespace RallyPortal.Controllers
         {
             if (ModelState.IsValid)
             {
-                int id;
-                try
-                {
-                    id = db.ArticleSet.Select(e => e.Id).OrderByDescending(e => e).First() + 1;
-                }
-                catch (Exception)
-                {
-                    id = 0;
-                }
+                int id = GetNextId();
 
                 var sourcePath = Path.Combine(Server.MapPath("~/Images"), "temp");
                 var destPath = Path.Combine(Server.MapPath("~/Images/FeaturedImages"), id.ToString());
 
-                var success = (new UploadController()).SaveFeaturedImage(sourcePath, destPath);
-                if (!success)
-                {
-                    sourcePath = Path.Combine(Server.MapPath("~/Images"), "no_image");
-                    System.IO.File.Copy(sourcePath, destPath);
-                }
+                var success = MoveTempFeaturedImage(sourcePath, destPath);
+                CreateThumbnail(sourcePath, destPath, success);
+                
                 article.ImageUrl = "~/Images/FeaturedImages/" + id.ToString();
                 article.LastModifiedDate = DateTime.Now;
                 article.PublishedDate = DateTime.Now;
@@ -86,6 +131,31 @@ namespace RallyPortal.Controllers
             return View(article);
         }
 
+        private void CreateThumbnail(string sourcePath, string destPath, bool success)
+        {
+            if (!success)
+            {
+                sourcePath = Path.Combine(Server.MapPath("~/Images"), "no_image");
+                System.IO.File.Copy(sourcePath, destPath);
+            }
+        }
+
+        private static bool MoveTempFeaturedImage(string sourcePath, string destPath)
+        {
+            if (System.IO.File.Exists(sourcePath))
+            {
+                System.IO.File.Move(sourcePath, destPath);
+                return true;
+            }
+            return false;
+        }
+
+
+        private int GetNextId()
+        {
+            return db.ArticleSet.Select(e => e.Id).OrderByDescending(e => e).FirstOrDefault() + 1;            
+        }
+
         //
         // GET: /Highlights/Edit/5
 
@@ -93,10 +163,9 @@ namespace RallyPortal.Controllers
         {
             Article article = db.ArticleSet.Find(id);
             if (!(article is Highlights))
-                return null;
+                return new HttpStatusCodeResult(404);
 
-
-            (new UploadController()).DeleteFile(Server.MapPath("~/Images/temp"));
+            DeleteTempFiles();
             return View(article);
         }
 
@@ -112,11 +181,10 @@ namespace RallyPortal.Controllers
                 var sourcePath = Path.Combine(Server.MapPath("~/Images"), "temp");
                 var destPath = Path.Combine(Server.MapPath("~/Images/FeaturedImages"), article.Id.ToString());
 
-                if (System.IO.File.Exists(sourcePath) && System.IO.File.Exists(destPath))
-                {
-                    System.IO.File.Delete(destPath);
-                }
-                (new UploadController()).SaveFeaturedImage(sourcePath, destPath);
+                DeleteCurrentFeaturedImage(sourcePath, destPath);
+
+                var success = MoveTempFeaturedImage(sourcePath, destPath);
+                CreateThumbnail(sourcePath, destPath, success);
 
                 article.LastModifiedDate = DateTime.Now;
                 db.Entry(article).State = EntityState.Modified;
@@ -128,6 +196,15 @@ namespace RallyPortal.Controllers
             return View(article);
         }
 
+        private static void DeleteCurrentFeaturedImage(string sourcePath, string destPath)
+        {
+
+            if (System.IO.File.Exists(sourcePath) && System.IO.File.Exists(destPath))
+            {
+                System.IO.File.Delete(destPath);
+            }
+        }
+
         //
         // GET: /Highlights/Delete/5
 
@@ -135,7 +212,7 @@ namespace RallyPortal.Controllers
         {
             Article article = db.ArticleSet.Find(id);
             if (!(article is Highlights))
-                return null;
+                return new HttpStatusCodeResult(404);
 
             SendMessage(MessageType.Warning, "If you delete the highlights, you cannot recover it later!");
             return View(article);
@@ -156,7 +233,11 @@ namespace RallyPortal.Controllers
             db.SaveChanges();
 
             // ImageUrl contains the full path
-            (new UploadController()).DeleteFile(Server.MapPath("~/Images/FeaturedImages/" + id.ToString()));
+            var physicalPath = Server.MapPath("~/Images/FeaturedImages/" + id.ToString());
+            if (System.IO.File.Exists(physicalPath))
+            {
+                System.IO.File.Delete(physicalPath);
+            }
 
             SendMessage(MessageType.Success, "The highlights successfully deleted!");
             return RedirectToAction("Index");

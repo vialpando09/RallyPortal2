@@ -134,15 +134,6 @@ namespace RallyPortal.Controllers
         {
             return RemoveFile((new List<string> { fileNames }).ToArray(), "~/Images/FeaturedImages");
         }
-
-        // Delete temp FeaturedImage
-        public void DeleteFile(string physicalPath)
-        {
-            if (System.IO.File.Exists(physicalPath))
-            {
-                System.IO.File.Delete(physicalPath);
-            }
-        }
     }
 }
 

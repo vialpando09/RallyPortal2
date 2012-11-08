@@ -1,0 +1,104 @@
+﻿@using Telerik.Web.Mvc.UI           
+@using RallyPortal
+@using RallyPortal.Helpers
+@{
+    ViewBag.Title = "Index";
+    ViewBag.PageTitle = "Users";
+    
+}
+<div class="content_pad">
+    <h3>Super Administrators</h3>
+    @(Html.Telerik().Grid(( IEnumerable<RallyPortal.Models.UserProfile>)(ViewBag.SuperAdministrator))
+        .Name("Grid")
+        .Columns(columns =>
+        {
+            columns.Template(
+                @<text>
+                    @item.UserName
+                </text>
+            ).Title("User name");
+            columns.Template(
+                @<text>
+                    @(item.Email)
+                </text>
+            ).Title("Email");
+            columns.Template(
+                @<text>
+                    @(WebSecurity.GetCreateDate(item.UserName).ToShortDateString())
+                </text>
+            ).Title("Creation date");
+            columns.Template(
+                @<text>
+                </text>
+            ).Title("").Width(400);
+        })
+        .Scrollable(scrolling => scrolling.Enabled(false))
+        .Sortable(sorting => sorting.Enabled(true))
+        .Pageable(paging => paging.Enabled(true))
+        .Footer(true)
+)
+    <h3>Administrators</h3>
+    @(Html.Telerik().Grid(( IEnumerable<RallyPortal.Models.UserProfile>)(ViewBag.Administrator))
+        .Name("Grid2")
+        .Columns(columns =>
+        {
+            columns.Template(
+                @<text>
+                    @item.UserName
+                </text>
+            ).Title("User name");
+            columns.Template(
+                @<text>
+                    @(item.Email)
+                </text>
+            ).Title("Email");
+            columns.Template(
+                @<text>
+                    @(WebSecurity.GetCreateDate(item.UserName).ToShortDateString())
+                </text>
+            ).Title("Creation date");
+            columns.Template(
+                @<text>
+                        @Html.ActionLinkButton(Url, "Demotion", "User", new { UserName = item.UserName },"Demotion to Reader")
+                        @Html.ActionLinkButton(Url, "Delete", "User", new { UserName = item.UserName },"Delete")
+                </text>
+            ).Title("").Width(400);
+        })
+        .Scrollable(scrolling => scrolling.Enabled(false))
+        .Sortable(sorting => sorting.Enabled(true))
+        .Pageable(paging => paging.Enabled(true))
+        .Footer(true)
+)
+    <h3>Readers</h3>
+    @(Html.Telerik().Grid(( IEnumerable<RallyPortal.Models.UserProfile>)(ViewBag.Reader))
+        .Name("Grid3")
+        .Columns(columns =>
+        {
+            columns.Template(
+                @<text>
+                    @item.UserName
+                </text>
+            ).Title("User name");
+            columns.Template(
+                @<text>
+                    @(item.Email)
+                </text>
+            ).Title("Email");
+            columns.Template(
+                @<text>
+                    @(WebSecurity.GetCreateDate(item.UserName).ToShortDateString())
+                </text>
+            ).Title("Creation date");
+            columns.Template(
+                @<text>
+                        @Html.ActionLinkButton(Url, "Promotion", "User", new { UserName = item.UserName },"Promotion to Admin")
+                        @Html.ActionLinkButton(Url, "Delete", "User", new { UserName = item.UserName },"Delete")
+                </text>
+            ).Title("").Width(400);
+        })
+        .Scrollable(scrolling => scrolling.Enabled(false))
+        .Sortable(sorting => sorting.Enabled(true))
+        .Pageable(paging => paging.Enabled(true))
+        .Footer(true)
+)
+</div>

@@ -50,11 +50,13 @@ jQuery('.accordion_container').accordion();
                         .ClientEvents(events => events
                             .OnSuccess(
                                 @<text>
-                                    function(e) {
-                                        if(e.operation == "upload")
-                                            $("#showTeamImage").attr('src', "@Url.Content("~/Images/tempTeam")");
+                    function(e) {
+                                        if(e.operation == "upload"){
+                                            var str = '@Url.Action("GetPhotoThumbnail", new { path = "~/Images/tempTeam", width = 400 })';
+                                            $("#showTeamImage").attr('src', str.replace('&amp;', '&'));
+                                        }
                                         else
-                                            $("#showTeamImage").attr('src', "@Url.Content("~/Images/no_image.jpg")");
+                                            $("#showTeamImage").attr('src', '@Url.Content("~/Images/no_image.jpg")');
                                     }
                                 </text>
                             )
@@ -92,11 +94,13 @@ jQuery('.accordion_container').accordion();
                         .ClientEvents(events => events
                             .OnSuccess(
                                 @<text>
-                                    function(e) {
-                                        if(e.operation == "upload")
-                                            $("#showDriverImage").attr('src', "@Url.Content("~/Images/tempDriver")");
+                    function(e) {
+                                        if(e.operation == "upload"){
+                                            var str = '@Url.Action("GetPhotoThumbnail", new { path = "~/Images/tempDriver", width = 400 })';
+                                            $("#showDriverImage").attr('src', str.replace('&amp;', '&'));
+                                        }
                                         else
-                                            $("#showDriverImage").attr('src', "@Url.Content("~/Images/no_image.jpg")");
+                                            $("#showDriverImage").attr('src', '@Url.Content("~/Images/no_image.jpg")');
                                     }
                                 </text>
                             )
@@ -134,11 +138,13 @@ jQuery('.accordion_container').accordion();
                         .ClientEvents(events => events
                             .OnSuccess(
                                 @<text>
-                                    function(e) {
-                                        if(e.operation == "upload")
-                                            $("#showCoDriverImage").attr('src', "@Url.Content("~/Images/tempCoDriver")");
+                    function(e) {
+                                        if(e.operation == "upload"){
+                                            var str = '@Url.Action("GetPhotoThumbnail", new { path = "~/Images/tempCoDriver", width = 400 })';
+                                            $("#showCoDriverImage").attr('src', str.replace('&amp;', '&'));
+                                        }
                                         else
-                                            $("#showCoDriverImage").attr('src', "@Url.Content("~/Images/no_image.jpg")");
+                                            $("#showCoDriverImage").attr('src', '@Url.Content("~/Images/no_image.jpg")');
                                     }
                                 </text>
                             )

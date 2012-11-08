@@ -4,42 +4,72 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+@section featured {
+    @Html.Partial("_featured", new RallyPortal.Models.FeaturedData { ImageUrl = Model.TeamImageUrl, Title = "Team: " + Model.TeamName + " Driver: " + Model.DriverName + " Co-Driver: " + Model.CoDriverName })
+}
+<div class="title main-title">
+    team <span>details</span>
+</div>
 
-<fieldset>
-    <legend>Team</legend>
-
-    <div class="display-label">TeamName</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.TeamName)
+<div class="entry">
+    <div class="inner1">
+        <div class="entry-image" style="background-image: url(@Url.Action("GetPhotoThumbnail",
+     new { path = Model.TeamImageUrl, width = 701 }));">
+        </div>
+        <div class="entry-title">Team - @Model.TeamName</div>
     </div>
-
-    <div class="display-label">DriverName</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.DriverName)
+    <div class="inner5">
+        <p>@Html.Raw(HttpUtility.HtmlDecode(Model.TeamSummary))</p>
     </div>
-
-    <div class="display-label">CoDriverName</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.CoDriverName)
+    <div class="inner2">
+        <div class="inner3">
+            &laquo;
+        </div>
+        <div class="inner4">
+            &raquo;
+        </div>
+        <div class="clear"></div>
     </div>
+</div>
 
-    <div class="display-label">TeamImageUrl</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.TeamImageUrl)
+<div class="entry">
+    <div class="inner1">
+        <div class="entry-image" style="background-image: url(@Url.Action("GetPhotoThumbnail",
+     new { path = Model.DriverImageUrl, width = 701 }));">
+        </div>
+        <div class="entry-title">Driver - @Model.DriverName</div>
     </div>
+    <div class="inner5">
+        <p>@Html.Raw(HttpUtility.HtmlDecode(Model.DriverSummary))</p>
+    </div>
+    <div class="inner2">
+        <div class="inner3">
+            &laquo;
+        </div>
+        <div class="inner4">
+            &raquo;
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
 
-    <div class="display-label">DriverImageUrl</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.DriverImageUrl)
+<div class="entry">
+    <div class="inner1">
+        <div class="entry-image" style="background-image: url(@Url.Action("GetPhotoThumbnail",
+     new { path = Model.CoDriverImageUrl, width = 701 }));">
+        </div>
+        <div class="entry-title">Co-Driver - @Model.CoDriverName</div>
     </div>
-
-    <div class="display-label">CoDriverImageUrl</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.CoDriverImageUrl)
+    <div class="inner5">
+        <p>@Html.Raw(HttpUtility.HtmlDecode(Model.CoDriverSummary))</p>
     </div>
-</fieldset>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+    <div class="inner2">
+        <div class="inner3">
+            &laquo;           
+        </div>
+        <div class="inner4">
+            &raquo;
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>

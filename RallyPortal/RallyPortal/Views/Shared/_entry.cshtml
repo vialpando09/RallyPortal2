@@ -1,0 +1,45 @@
+﻿@model RallyPortal.Article
+<div class="entry">
+    <div class="inner1">
+        <div class="entry-image" style="background-image: url(@Url.Action("GetPhotoThumbnail",
+     new { path = Model.ImageUrl, width = 701 }));">
+        </div>
+        <div class="entry-title">
+            @if (Model is RallyPortal.Highlights)
+            { <text>Highlights - </text> }
+            @Model.Title
+        </div>
+    </div>
+    <div class="inner5">
+        @if (Model is RallyPortal.Highlights)
+        {
+            <p>@Html.Raw(RallyPortal.Common.GetFirstParagraph(HttpUtility.HtmlDecode(Model.Content))) @Html.ActionLink("Read more...", "Details", "Highlights", new { id = Model.Id }, null)</p>
+        }
+        else
+        {
+            <p>@Html.Raw(RallyPortal.Common.GetFirstParagraph(HttpUtility.HtmlDecode(Model.Content))) @Html.ActionLink("Read more...", "Details", "Article", new { id = Model.Id }, null)</p>
+        }
+        @{
+            string url;
+            if (Model is RallyPortal.Highlights)
+            {
+                url = Url.Action("Details", "Highlights", new { id = Model.Id });
+            }
+            else
+            {
+                url = Url.Action("Details", "Article", new { id = Model.Id });
+            }
+        }
+        @RallyPortal.Common.FacebookLink(url) @RallyPortal.Common.GooglePlusLink(url) @RallyPortal.Common.TwitterLink(url) @RallyPortal.Common.LinkedInLink(url)
+
+    </div>
+    <div class="inner2">
+        <div class="inner3">
+            By @Model.AuthorName, <span>@Model.LastModifiedDate.ToShortDateString()</span>
+        </div>
+        <div class="inner4">
+            <span class="comment">@Model.Comment.Count</span>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>

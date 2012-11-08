@@ -1,0 +1,6 @@
+﻿@model IEnumerable<RallyPortal.Article>
+
+@foreach (var article in Model)
+{
+    @Html.Partial("_entry", article)
+}

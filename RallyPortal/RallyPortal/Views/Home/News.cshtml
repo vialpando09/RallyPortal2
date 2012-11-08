@@ -1,0 +1,23 @@
+﻿@model IEnumerable<RallyPortal.Article>
+
+@{
+    ViewBag.Title = "News";
+    var firstFour = ViewBag.FirstFour as IEnumerable<RallyPortal.Article>;
+}
+
+@section additionalScripts {
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#slider").tabs({ fx: { opacity: "toggle" } }).tabs("rotate", 6000, true);
+        });
+    </script>
+}
+
+@section featured {
+    @Html.Partial("_slider", firstFour)        
+}
+
+@Html.Partial("_entrylist", Model)
+
+@Html.Partial("_paging")

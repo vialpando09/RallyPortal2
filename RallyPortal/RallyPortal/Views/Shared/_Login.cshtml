@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+@helper divider()
+{
+    <div class="divider-left"></div>
+    <div class="divider-right"></div>            
+}
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>RallyPortal - @ViewBag.Title</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/jquery-ui-1.8.12.custom.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/slider.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/login.css")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.8.12.custom.min.js")" type="text/javascript"></script>
+    <link href='http://fonts.googleapis.com/css?family=Questrial|Droid+Sans|Alice' rel='stylesheet'
+        type='text/css' />
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#slider").tabs({ fx: { opacity: "toggle" } }).tabs("rotate", 6000, true);
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <div class="main">
+            <h1>Rally<span>Portal</span>
+            </h1>
+            <section id="login">
+                @Html.Partial("_LoginPartial")
+            </section>
+        </div>
+    </header>
+    <section id="content">
+        <menu>
+            <div class="main">
+                @divider()
+                @Html.ActionLink("Home", "Index")
+                @if (User.IsInRole("Administrator") || User.IsInRole("SuperAdministrator"))
+                {
+                    @divider()
+                    @Html.ActionLink("Admin", "Index", "Admin",null,null)
+                }
+                @divider()
+                @Html.ActionLink("Highlights", "Index")
+                @divider()
+                @Html.ActionLink("News", "Index")
+                @divider()
+                @Html.ActionLink("Galleries", "Index")
+                @divider()
+                @Html.ActionLink("Teams", "Index")
+                @divider()
+                @Html.ActionLink("About", "Index")
+                @divider()
+            </div>
+        </menu>
+        @Html.Partial("_featured", new RallyPortal.Models.FeaturedData { ImageUrl="~/Images/login.jpg", Title="Welcome to our site, please log in." })
+        <div class="main-content">
+            <div class="left-side">
+                @if (ViewBag.GlobalMessageType != null)
+                {
+                    @Html.Partial("_messageBox", (RallyPortal.MessageType)ViewBag.GlobalMessageType)
+                }
+                @RenderBody()
+            </div>
+            <div class="right-side">
+                <div class="title" id="module-blue">
+                    latest highlights
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+    </footer>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

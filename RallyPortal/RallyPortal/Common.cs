@@ -43,38 +43,38 @@ namespace RallyPortal
     {
         private static string SiteAddress = "";
 
-        public static System.Drawing.Image ResizeImage(string originalFilename, int width)
+        public static string GetFirstParagraph(string htmltext)
         {
-            System.Drawing.Image imgOriginal = System.Drawing.Image.FromFile(originalFilename);
-            return ScaleBySize(imgOriginal, width);            
+            Match m = Regex.Match(htmltext, @"<p>\s*(.+?)\s*</p>");
+            if (m.Success)
+            {
+                return m.Groups[1].Value;
+            }
+            else
+            {
+                return htmltext.Split(new string[] { "<br /><br />" }, StringSplitOptions.RemoveEmptyEntries)[0];
+            }
         }
 
-        public static System.Drawing.Image ScaleBySize(System.Drawing.Image imgPhoto, int size)
+        public static void ResizeImage(string originalFilename, string newFilename, int width)
         {
-            int logoSize = size;
+            System.Drawing.Image imgOriginal = System.Drawing.Image.FromFile(originalFilename);
+            ScaleBySize(imgOriginal, width).Save(newFilename);            
+        }
 
+        public static System.Drawing.Image ScaleBySize(System.Drawing.Image imgPhoto, float width)
+        {            
             float sourceWidth = imgPhoto.Width;
             float sourceHeight = imgPhoto.Height;
             float destHeight = 0;
-            float destWidth = 0;
+            float destWidth = width;
             int sourceX = 0;
             int sourceY = 0;
             int destX = 0;
             int destY = 0;
 
-            // Resize Image to have the height = logoSize/2 or width = logoSize.
-            // Height is greater than width, set Height = logoSize and resize width accordingly
-            if (sourceWidth > (2 * sourceHeight))
-            {
-                destWidth = logoSize;
-                destHeight = (float)(sourceHeight * logoSize / sourceWidth);
-            }
-            else
-            {
-                int h = logoSize / 2;
-                destHeight = h;
-                destWidth = (float)(sourceWidth * h / sourceHeight);
-            }
+            destHeight = (float)(sourceHeight * width / sourceWidth);
+
             // Width is greater than height, set Width = logoSize and resize height accordingly
 
             System.Drawing.Bitmap bmPhoto = new System.Drawing.Bitmap((int)destWidth, (int)destHeight,
@@ -229,18 +229,16 @@ namespace RallyPortal
         }
     
 
-        public static MvcHtmlString LinkedInLink(string date, int id, string title)
+        public static MvcHtmlString LinkedInLink(string url)
         {
-            string link = SiteAddress + "/Entries/" + date + "/" + id.ToString() + "/" + title;
-            string linkedIn = "<script src=\"//platform.linkedin.com/in.js\" type=\"text/javascript\"></script><script type=\"IN/Share\" data-url=\"" + link + "\"></script>";
+            string linkedIn = "<script src=\"//platform.linkedin.com/in.js\" type=\"text/javascript\"></script><script type=\"IN/Share\" data-url=\"" + url + "\"></script>";
 
             return new MvcHtmlString(linkedIn);
         }
 
-        public static MvcHtmlString GooglePlusLink(string date, int id, string title)
+        public static MvcHtmlString GooglePlusLink(string url)
         {
-            string link = SiteAddress + "/Entries/" + date + "/" + id.ToString() + "/" + title;
-            string gplus = "<div style=\"float: left; width: 42px; overflow: hidden;\"><div class=\"g-plusone\" data-size=\"medium\" data-annotation=\"inline\" data-width=\"120\" data-href=\"" + link + "\"></div></div>";
+            string gplus = "<div style=\"float: left; width: 42px; overflow: hidden;\"><div class=\"g-plusone\" data-size=\"medium\" data-annotation=\"inline\" data-width=\"120\" data-href=\"" + url + "\"></div></div>";
 
             return new MvcHtmlString(gplus);
         }
@@ -250,21 +248,19 @@ namespace RallyPortal
             return new MvcHtmlString( "<script type=\"text/javascript\">  (function() {    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;    po.src = 'https://apis.google.com/js/plusone.js';    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);  })();</script>" );
         }
 
-        public static MvcHtmlString FacebookLink(string date, int id, string title)
+        public static MvcHtmlString FacebookLink(string url)
         {
-            string link = SiteAddress + "/Entries/" + date + "/" + id.ToString() + "/" + title;
-            link = link.Replace(":", "%3A");
-            link = link.Replace("/", "%2F");
+            url = url.Replace(":", "%3A");
+            url = url.Replace("/", "%2F");
 
-            string fb = "<div style=\"float: left\"><iframe src=\"//www.facebook.com/plugins/like.php?href=" + link + "&amp;send=false&amp;layout=button_count&amp;width=80&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=35\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:80px; height:35px;\" allowTransparency=\"true\"></iframe></div>";
+            string fb = "<div style=\"float: left\"><iframe src=\"//www.facebook.com/plugins/like.php?href=" + url + "&amp;send=false&amp;layout=button_count&amp;width=80&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=35\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:80px; height:35px;\" allowTransparency=\"true\"></iframe></div>";
             return new MvcHtmlString(fb);
         }
 
-        public static MvcHtmlString TwitterLink(string date, int id, string title, string type)
+        public static MvcHtmlString TwitterLink(string url)
         {
-            string link = SiteAddress + "/Entries/" + date + "/" + id.ToString() + "/" + title;
             string twitter;
-                twitter = "<div style=\"float: left; margin-right: 10px;\"><a href=\"https://twitter.com/share\" class=\"twitter-share-button\" data-url=\"" + link + "\" data-count=\"none\" data-lang=\"en\">Tweet</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=\"//platform.twitter.com/widgets.js\";fjs.parentNode.insertBefore(js,fjs);}}(document,\"script\",\"twitter-wjs\");</script></div>";
+                twitter = "<div style=\"float: left; display: inline-table; margin-right: 10px;\"><a href=\"https://twitter.com/share\" class=\"twitter-share-button\" data-url=\"" + url + "\" data-count=\"none\" data-lang=\"en\">Tweet</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=\"//platform.twitter.com/widgets.js\";fjs.parentNode.insertBefore(js,fjs);}}(document,\"script\",\"twitter-wjs\");</script></div>";
 
 
             return new MvcHtmlString(twitter);

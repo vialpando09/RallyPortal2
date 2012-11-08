@@ -3,8 +3,10 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Threading;
 using System.Web.Mvc;
+using System.Linq;
 using WebMatrix.WebData;
 using RallyPortal.Models;
+using System.Web.Security;
 
 namespace RallyPortal.Filters
 {
@@ -38,7 +40,24 @@ namespace RallyPortal.Filters
                         }
                     }
 
-                    WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", autoCreateTables: true);
+                    
+                    if (!Roles.RoleExists("SuperAdministrator"))
+                        Roles.CreateRole("SuperAdministrator");
+                    if (!Roles.RoleExists("Administrator"))
+                        Roles.CreateRole("Administrator");
+
+                    if (!WebSecurity.UserExists("DebreceniCsaba"))
+                    {
+                        WebSecurity.CreateUserAndAccount(
+                            "DebreceniCsaba",
+                            "Csaba1989#",
+                            new { Email = "vialpando09@gmail.com" });
+                        WebSecurity.Login("DebreceniCsaba", "Csaba1989#");
+                    }
+
+                    if (!Roles.GetRolesForUser("DebreceniCsaba").Contains("SuperAdministrator"))
+                        Roles.AddUsersToRoles(new[] { "DebreceniCsaba" }, new[] { "SuperAdministrator" });
+
                 }
                 catch (Exception ex)
                 {

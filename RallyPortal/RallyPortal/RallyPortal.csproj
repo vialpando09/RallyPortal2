@@ -16,6 +16,10 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,6 +52,9 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Providers">
+      <HintPath>..\packages\Microsoft.AspNet.Providers.Core.1.1\lib\net40\System.Web.Providers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -174,6 +181,7 @@
     </Compile>
     <Compile Include="Common.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\EditorImageBrowserController.cs" />
@@ -183,7 +191,9 @@
     <Compile Include="Controllers\InstallController.cs" />
     <Compile Include="Controllers\TeamController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
+    <Compile Include="Filters\LayoutSelectorActionFilterAttribute.cs" />
     <Compile Include="Filters\MessageActionFilterAttribute.cs" />
     <Compile Include="Gallery.cs">
       <DependentUpon>Model.tt</DependentUpon>
@@ -200,6 +210,7 @@
     <Compile Include="Image.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -217,6 +228,7 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Helpers\SimpleMembershipProviderHelper.cs" />
     <Compile Include="Team.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -233,6 +245,22 @@
     <Content Include="Content\Default\treeview-line.png" />
     <Content Include="Content\Default\treeview-nodes-rtl.png" />
     <Content Include="Content\Default\treeview-nodes.png" />
+    <Content Include="Content\Design\banner-bg.png" />
+    <Content Include="Content\Design\comment.png" />
+    <Content Include="Content\Design\content-bg.gif" />
+    <Content Include="Content\Design\fader.png" />
+    <Content Include="Content\Design\foldersList.gif" />
+    <Content Include="Content\Design\gallery.png" />
+    <Content Include="Content\Design\head-bg.gif" />
+    <Content Include="Content\Design\logo.png" />
+    <Content Include="Content\Design\marker.gif" />
+    <Content Include="Content\Design\menu-bg-hov.gif" />
+    <Content Include="Content\Design\menu-bg.gif" />
+    <Content Include="Content\Design\menu-divider.gif" />
+    <Content Include="Content\Design\slide-3.jpg" />
+    <Content Include="Content\Design\slide2.jpg" />
+    <Content Include="Content\Design\title2-bg.gif" />
+    <Content Include="Content\Design\title3-bg.gif" />
     <Content Include="Content\fonts\BebasNeue-webfont.svg" />
     <Content Include="Content\fonts\Dharma Type Font License.txt" />
     <Content Include="Content\fonts\fontomas-webfont.svg" />
@@ -261,6 +289,7 @@
     <Content Include="Content\Hay\treeview-nodes-rtl.png" />
     <Content Include="Content\Hay\treeview-nodes.png" />
     <Content Include="Content\jquery-ui-1.8.12.custom.css" />
+    <Content Include="Content\lightbox.css" />
     <Content Include="Content\Metro\editor.png" />
     <Content Include="Content\Metro\imagebrowser.png" />
     <Content Include="Content\Metro\loading.gif" />
@@ -332,6 +361,8 @@
     <Content Include="Content\Sitefinity\treeview-line.png" />
     <Content Include="Content\Sitefinity\treeview-nodes-rtl.png" />
     <Content Include="Content\Sitefinity\treeview-nodes.png" />
+    <Content Include="Content\slider.css" />
+    <Content Include="Content\login.css" />
     <Content Include="Content\Sunset\editor.png" />
     <Content Include="Content\Sunset\imagebrowser.png" />
     <Content Include="Content\Sunset\loading.gif" />
@@ -516,7 +547,15 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Images\ArticleContents\Chrysanthemum.jpg" />
+    <Content Include="Images\bg-checker.png" />
+    <Content Include="Images\box.png" />
+    <Content Include="Scripts\close.png" />
+    <Content Include="Scripts\loading.gif" />
+    <Content Include="Images\login.jpg" />
+    <Content Include="Images\next.png" />
     <Content Include="Images\no_image.jpg" />
+    <Content Include="Images\prev.png" />
+    <Content Include="Images\speech-bubbles.png" />
     <Content Include="Model.edmx.sql" />
     <Content Include="Scripts\dashboard.js" />
     <Content Include="Scripts\jquery-1.5.1-vsdoc.js" />
@@ -526,6 +565,7 @@
     <Content Include="Scripts\jquery-1.7.1-vsdoc.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
+    <Content Include="Scripts\jquery-1.7.2.min.js" />
     <Content Include="Scripts\jquery-ui-1.8.11.js" />
     <Content Include="Scripts\jquery-ui-1.8.11.min.js" />
     <Content Include="Scripts\jquery-ui-1.8.12.custom.min.js" />
@@ -552,6 +592,7 @@
     <Content Include="Scripts\jquery.visualize.js" />
     <Content Include="Scripts\knockout-2.1.0.debug.js" />
     <Content Include="Scripts\knockout-2.1.0.js" />
+    <Content Include="Scripts\lightbox.js" />
     <Content Include="Scripts\login.js" />
     <Content Include="Scripts\MicrosoftAjax.debug.js" />
     <Content Include="Scripts\MicrosoftAjax.js" />
@@ -591,7 +632,9 @@
     <Content Include="Scripts\telerik.upload.min.js" />
     <Content Include="Scripts\telerik.window.min.js" />
     <Content Include="Scripts\widgets.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -721,7 +764,23 @@
     <Content Include="Views\Team\Index.cshtml" />
     <Content Include="Views\Shared\_Administration.cshtml" />
     <Content Include="Views\Shared\_messageBox.cshtml" />
-    <Content Include="Views\Shared\_LogOnPartial.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\_AppStart.cshtml" />
+    <Content Include="_AppStart.cshtml" />
+    <Content Include="Views\Shared\_AppStart.cshtml" />
+    <Content Include="Views\Shared\_entry.cshtml" />
+    <Content Include="Views\Shared\_slider.cshtml" />
+    <Content Include="Views\Shared\_entrylist.cshtml" />
+    <Content Include="Views\Shared\_featured.cshtml" />
+    <Content Include="Views\Shared\_comment.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Shared\_Login.cshtml" />
+    <Content Include="Views\Home\Galleries.cshtml" />
+    <Content Include="Views\Home\News.cshtml" />
+    <Content Include="Views\Home\Highlights.cshtml" />
+    <Content Include="Views\Shared\_search.cshtml" />
+    <Content Include="Views\Home\Teams.cshtml" />
+    <Content Include="Views\Shared\_paging.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

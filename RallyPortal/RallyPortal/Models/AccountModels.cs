@@ -26,6 +26,28 @@ namespace RallyPortal.Models
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
         public string UserName { get; set; }
+        public string Email { get; set; }
+        public DateTime? LastLoginDate { get; set; }
+    }
+
+    public class CommentData
+    {
+        public ICollection<Comment> Comments { get; set; }
+        public int Id { get; set; }
+    }
+
+    public class TeamData
+    {
+        public string TeamImageUrl { get; set; }
+        public string TeamName { get; set; }
+        public string CoDriver { get; set; }
+        public string Driver { get; set; }
+    }
+
+    public class FeaturedData
+    {
+        public string ImageUrl { get; set; }
+        public string Title { get; set; }
     }
 
     public class RegisterExternalLoginModel
@@ -33,6 +55,10 @@ namespace RallyPortal.Models
         [Required]
         [Display(Name = "User name")]
         public string UserName { get; set; }
+        [Required]
+        [Display(Name = "Email address")]
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
 
         public string ExternalLoginData { get; set; }
     }
@@ -87,6 +113,10 @@ namespace RallyPortal.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [DataType(DataType.EmailAddress)]
+        [Display(Name = "Email address")]
+        public string EmailAddress { get; set; }
     }
 
     public class ExternalLogin

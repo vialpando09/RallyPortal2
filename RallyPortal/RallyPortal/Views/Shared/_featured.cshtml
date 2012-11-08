@@ -1,0 +1,17 @@
+﻿@model RallyPortal.Models.FeaturedData
+
+<div id="slider">
+    <div>
+        <div class="wrapper"></div>
+        <div class="image" style="background-image: url(@Url.Action("GetPhotoThumbnail",
+     new { path = Model.ImageUrl, width = 1232 }));">
+        </div>
+        <div class="fader"></div>
+        <div class="data">
+            <div class="marker">&raquo;</div>
+            <div class="title">
+                @Model.Title
+            </div>
+        </div>
+    </div>
+</div>

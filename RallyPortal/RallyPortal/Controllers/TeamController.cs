@@ -9,9 +9,9 @@ using System.Web.Mvc;
 using RallyPortal;
 
 namespace RallyPortal.Controllers
-{ 
+{
     [Authorize(Roles = "Administrator, SuperAdministrator")]
-    public class TeamController : BaseController 
+    public class TeamController : BaseController
     {
         private void DeleteTempFiles()
         {
@@ -31,13 +31,14 @@ namespace RallyPortal.Controllers
         // GET: /Team/
 
         public ViewResult Index()
-        {   
+        {
             return View(db.TeamSet.ToList());
         }
 
         //
         // GET: /Team/Details/5
 
+        [AllowAnonymous()]
         public ViewResult Details(int id)
         {
             Team team = db.TeamSet.Find(id);
@@ -51,7 +52,7 @@ namespace RallyPortal.Controllers
         {
             DeleteTempFiles();
             return View();
-        } 
+        }
 
         //
         // POST: /Team/Create
@@ -61,52 +62,20 @@ namespace RallyPortal.Controllers
         {
             if (ModelState.IsValid)
             {
-                int id;
-                try
-                {
-                    id = db.TeamSet.OrderByDescending(e => e.Id).Select(e => e.Id).First() + 1;
-                }
-                catch (Exception)
-                {
-                    id = 0;
-                }
+                int id = db.TeamSet.OrderByDescending(e => e.Id).Select(e => e.Id).FirstOrDefault() + 1;
 
                 string folder = Path.Combine(Server.MapPath("~/Images/Teams"), id.ToString());
                 if (!Directory.Exists(folder))
                     Directory.CreateDirectory(folder);
 
                 //TeamImage
-                {
-                    string tempTeamImage = Path.Combine(Server.MapPath("~/Images"), "tempTeam");
-                    string teamImage = Path.Combine(folder, "team");
-                    if (!System.IO.File.Exists(tempTeamImage))
-                        tempTeamImage = Path.Combine(Server.MapPath("~/Images"), "no_image.jpg");
-                    if (System.IO.File.Exists(teamImage))
-                        System.IO.File.Delete(teamImage);
-                    System.IO.File.Copy(tempTeamImage, teamImage);
-                }
+                ManageTeamImage(folder);
 
                 //DriverImage
-                {
-                    string tempDriverImage = Path.Combine(Server.MapPath("~/Images"), "tempDriver");
-                    string driverImage = Path.Combine(folder, "driver");
-                    if (!System.IO.File.Exists(tempDriverImage))
-                        tempDriverImage = Path.Combine(Server.MapPath("~/Images"), "no_image.jpg");
-                    if (System.IO.File.Exists(driverImage))
-                        System.IO.File.Delete(driverImage);
-                    System.IO.File.Copy(tempDriverImage, driverImage);
-                }
+                ManageDriverImage(folder);
 
                 //CoDriverImage
-                {
-                    string tempCoDriverImage = Path.Combine(Server.MapPath("~/Images"), "tempCoDriver");
-                    string coDriverImage = Path.Combine(folder, "coDriver");
-                    if (!System.IO.File.Exists(tempCoDriverImage))
-                        tempCoDriverImage = Path.Combine(Server.MapPath("~/Images"), "no_image.jpg");
-                    if (System.IO.File.Exists(coDriverImage))
-                        System.IO.File.Delete(coDriverImage);
-                    System.IO.File.Copy(tempCoDriverImage, coDriverImage);
-                }
+                ManageCoDriverImage(folder);
 
                 team.TeamImageUrl = "~/Images/Teams/" + id.ToString() + "/team";
                 team.DriverImageUrl = "~/Images/Teams/" + id.ToString() + "/driver";
@@ -120,13 +89,46 @@ namespace RallyPortal.Controllers
                 return RedirectToAction("Index");
             }
 
-            SendMessage(MessageType.Error, "Something went wrong! :( Try it again");                
+            SendMessage(MessageType.Error, "Something went wrong! :( Try it again");
             return View(team);
         }
-        
+
+        private void ManageCoDriverImage(string folder)
+        {
+            string tempCoDriverImage = Path.Combine(Server.MapPath("~/Images"), "tempCoDriver");
+            string coDriverImage = Path.Combine(folder, "coDriver");
+            if (!System.IO.File.Exists(tempCoDriverImage))
+                tempCoDriverImage = Path.Combine(Server.MapPath("~/Images"), "no_image.jpg");
+            if (System.IO.File.Exists(coDriverImage))
+                System.IO.File.Delete(coDriverImage);
+            System.IO.File.Copy(tempCoDriverImage, coDriverImage);
+        }
+
+        private void ManageDriverImage(string folder)
+        {
+            string tempDriverImage = Path.Combine(Server.MapPath("~/Images"), "tempDriver");
+            string driverImage = Path.Combine(folder, "driver");
+            if (!System.IO.File.Exists(tempDriverImage))
+                tempDriverImage = Path.Combine(Server.MapPath("~/Images"), "no_image.jpg");
+            if (System.IO.File.Exists(driverImage))
+                System.IO.File.Delete(driverImage);
+            System.IO.File.Copy(tempDriverImage, driverImage);
+        }
+
+        private void ManageTeamImage(string folder)
+        {
+            string tempTeamImage = Path.Combine(Server.MapPath("~/Images"), "tempTeam");
+            string teamImage = Path.Combine(folder, "team");
+            if (!System.IO.File.Exists(tempTeamImage))
+                tempTeamImage = Path.Combine(Server.MapPath("~/Images"), "no_image.jpg");
+            if (System.IO.File.Exists(teamImage))
+                System.IO.File.Delete(teamImage);
+            System.IO.File.Copy(tempTeamImage, teamImage);
+        }
+
         //
         // GET: /Team/Edit/5
- 
+
         public ActionResult Edit(int id)
         {
             DeleteTempFiles();
@@ -149,40 +151,13 @@ namespace RallyPortal.Controllers
                     Directory.CreateDirectory(folder);
 
                 //TeamImage
-                {
-                    string tempTeamImage = Path.Combine(Server.MapPath("~/Images"), "tempTeam");
-                    string teamImage = Path.Combine(folder, "team");
-                    if (System.IO.File.Exists(tempTeamImage))
-                    {
-                        if (System.IO.File.Exists(teamImage))
-                            System.IO.File.Delete(teamImage);
-                        System.IO.File.Move(tempTeamImage, teamImage);
-                    }
-                }
+                OverwriteTeamImage(folder);
 
                 //DriverImage
-                {
-                    string tempDriverImage = Path.Combine(Server.MapPath("~/Images"), "tempDriver");
-                    string driverImage = Path.Combine(folder, "driver");
-                    if (System.IO.File.Exists(tempDriverImage))
-                    {
-                        if (System.IO.File.Exists(driverImage))
-                            System.IO.File.Delete(driverImage);
-                        System.IO.File.Move(tempDriverImage, driverImage);
-                    }
-                }
+                OverwriteDriverImage(folder);
 
                 //CoDriverImage
-                {
-                    string tempCoDriverImage = Path.Combine(Server.MapPath("~/Images"), "tempCoDriver");
-                    string coDriverImage = Path.Combine(folder, "coDriver");
-                    if (System.IO.File.Exists(tempCoDriverImage))
-                    {
-                        if (System.IO.File.Exists(coDriverImage))
-                            System.IO.File.Delete(coDriverImage);
-                        System.IO.File.Move(tempCoDriverImage, coDriverImage);
-                    }
-                }
+                OverwriteCoDriverImage(folder);
 
                 db.Entry(team).State = EntityState.Modified;
                 db.SaveChanges();
@@ -195,9 +170,45 @@ namespace RallyPortal.Controllers
             return View(team);
         }
 
+        private void OverwriteCoDriverImage(string folder)
+        {
+            string tempCoDriverImage = Path.Combine(Server.MapPath("~/Images"), "tempCoDriver");
+            string coDriverImage = Path.Combine(folder, "coDriver");
+            if (System.IO.File.Exists(tempCoDriverImage))
+            {
+                if (System.IO.File.Exists(coDriverImage))
+                    System.IO.File.Delete(coDriverImage);
+                System.IO.File.Move(tempCoDriverImage, coDriverImage);
+            }
+        }
+
+        private void OverwriteDriverImage(string folder)
+        {
+            string tempDriverImage = Path.Combine(Server.MapPath("~/Images"), "tempDriver");
+            string driverImage = Path.Combine(folder, "driver");
+            if (System.IO.File.Exists(tempDriverImage))
+            {
+                if (System.IO.File.Exists(driverImage))
+                    System.IO.File.Delete(driverImage);
+                System.IO.File.Move(tempDriverImage, driverImage);
+            }
+        }
+
+        private void OverwriteTeamImage(string folder)
+        {
+            string tempTeamImage = Path.Combine(Server.MapPath("~/Images"), "tempTeam");
+            string teamImage = Path.Combine(folder, "team");
+            if (System.IO.File.Exists(tempTeamImage))
+            {
+                if (System.IO.File.Exists(teamImage))
+                    System.IO.File.Delete(teamImage);
+                System.IO.File.Move(tempTeamImage, teamImage);
+            }
+        }
+
         //
         // GET: /Team/Delete/5
- 
+
         public ActionResult Delete(int id)
         {
             Team team = db.TeamSet.Find(id);
@@ -210,10 +221,23 @@ namespace RallyPortal.Controllers
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
-        {            
+        {
             Team team = db.TeamSet.Find(id);
+
+            string coDriverImage = Server.MapPath(team.CoDriverImageUrl);
+            string driverImage = Server.MapPath(team.DriverImageUrl);
+            string teamImage = Server.MapPath(team.TeamImageUrl);
+
             db.TeamSet.Remove(team);
             db.SaveChanges();
+
+            if (System.IO.File.Exists(teamImage))
+                System.IO.File.Delete(teamImage);
+            if (System.IO.File.Exists(driverImage))
+                System.IO.File.Delete(driverImage);
+            if (System.IO.File.Exists(coDriverImage))
+                System.IO.File.Delete(coDriverImage);
+
             SendMessage(MessageType.Success, "The team successfully deleted!");
             return RedirectToAction("Index");
         }

@@ -26,9 +26,12 @@ namespace RallyPortal.Controllers
         //
         // GET: /Gallery/Details/5
 
+        [AllowAnonymous()]
         public ViewResult Details(int id)
         {
             Gallery gallery = db.GallerySet.Find(id);
+            ViewBag.GalleryPath = GenerateGalleryPath(gallery);
+            ViewBag.TopCategories = db.GalleryCategorySet.Where(category => category.Parent == null);
             return View(gallery);
         }
 
@@ -38,6 +41,7 @@ namespace RallyPortal.Controllers
         public ActionResult Create()
         {
             DeleteTempGallery();
+            ViewBag.NextImageId = 0;
             return View();
         }
 
@@ -55,7 +59,6 @@ namespace RallyPortal.Controllers
                     System.IO.File.Delete(file);
                 }
             }
-            ViewBag.NextImageId = 0;
         } 
 
         //
@@ -72,47 +75,20 @@ namespace RallyPortal.Controllers
             if (ModelState.IsValid)
             {
                 // Gallery ID
-                int id;
-                try
-                {
-                    id = db.GallerySet.OrderByDescending(e => e.Id).Select(e => e.Id).First() + 1;
-                }
-                catch (Exception)
-                {
-                    id = 0;
-                }
+                int id = GetNextGalleryId();
 
                 // Check and move images
                 var imagesPath = Server.MapPath("~/Images/Galleries/tempGallery");
                 var copyPath = Server.MapPath("~/Images/Galleries/" + id.ToString());
-                {
-                    //Create directory
-                    if (!Directory.Exists(copyPath))
-                    {
-                        Directory.CreateDirectory(copyPath);
-                    }
-                }
-                {
-                    //Move files and create image objects
-                    var files = Directory.GetFiles(imagesPath);
-                    foreach (var file in files)
-                    {
-                        for (int i = 0; i < ids.Length; i++)
-                        {
-                            if (filenames[i] == Path.GetFileName(file))
-                            {
-                                var image = new Image { Description = descriptions[i], Title = titles[i], ImageId = int.Parse(ids[i]), Gallery = gallery };
-                                db.ImageSet.Add(image);
-                                gallery.Images.Add(image);
-                                var destSource = Path.Combine(copyPath, ids[i]);
-                                System.IO.File.Move(file, destSource);
-                            }
-                        }
-                    }
-                }
+
+                CreateCopyPath(copyPath);
+                MoveFilesCreateImages(gallery, ids, titles, descriptions, filenames, imagesPath, copyPath);
+
                 gallery.Category = GenerateGalleryCategories(path);
+
                 db.GallerySet.Add(gallery);
                 db.SaveChanges();
+
                 SendMessage(MessageType.Success, "The gallery successfully created!");
                 return RedirectToAction("Index");
             }
@@ -120,7 +96,44 @@ namespace RallyPortal.Controllers
             SendMessage(MessageType.Error, "Something went wrong! :( Try it again");  
             return View(gallery);
         }
-        
+
+        #region CreateHelpers
+        private void MoveFilesCreateImages(Gallery gallery, string[] ids, string[] titles, string[] descriptions, string[] filenames, string imagesPath, string copyPath)
+        {
+            //Move files and create image objects
+            var files = Directory.GetFiles(imagesPath);
+            foreach (var file in files)
+            {
+                for (int i = 0; i < ids.Length; i++)
+                {
+                    if (filenames[i] == Path.GetFileName(file))
+                    {
+                        var image = new Image { Description = descriptions[i], Title = titles[i], ImageId = int.Parse(ids[i]), Gallery = gallery };
+                        db.ImageSet.Add(image);
+                        gallery.Images.Add(image);
+                        var destSource = Path.Combine(copyPath, ids[i]);
+                        System.IO.File.Move(file, destSource);
+                    }
+                }
+            }
+        }
+
+        private static void CreateCopyPath(string copyPath)
+        {
+            //Create directory
+            if (!Directory.Exists(copyPath))
+            {
+                Directory.CreateDirectory(copyPath);
+            }
+        }
+
+        private int GetNextGalleryId()
+        {
+            int id = db.GallerySet.OrderByDescending(e => e.Id).Select(e => e.Id).FirstOrDefault() + 1;
+            
+            return id;
+        }
+        #endregion
         //
         // GET: /Gallery/Edit/5
  
@@ -130,6 +143,19 @@ namespace RallyPortal.Controllers
 
             // Get Gallery
             Gallery gallery = db.GallerySet.Find(id);
+            string path = GenerateGalleryPath(gallery);
+            ViewBag.Path = path;
+
+            // Get next imageId
+            int imageId = GetNextGalleryId();
+
+            ViewBag.NextImageId = imageId;
+            
+            return View(gallery);
+        }
+
+        private static string GenerateGalleryPath(Gallery gallery)
+        {
             string path = "";
             GalleryCategory category = gallery.Category;
             while (category != null)
@@ -137,22 +163,7 @@ namespace RallyPortal.Controllers
                 path = "/" + category.Title + path;
                 category = category.Parent;
             }
-            ViewBag.Path = path;
-
-            // Get next imageId
-            int imageId;
-            try
-            {
-                imageId = gallery.Images.Select(e => e.ImageId).OrderByDescending(e => e).First() + 1;
-            }
-            catch (Exception)
-            {
-                imageId = 0;
-            }
-
-            ViewBag.NextImageId = imageId;
-            
-            return View(gallery);
+            return path;
         }
 
         //
@@ -169,49 +180,33 @@ namespace RallyPortal.Controllers
                 // Check and move images
                 var imagesPath = Server.MapPath("~/Images/Galleries/tempGallery");
                 var copyPath = Server.MapPath("~/Images/Galleries/" + id.ToString());
-                {
-                    //Create directory
-                    if (!Directory.Exists(copyPath))
-                    {
-                        Directory.CreateDirectory(copyPath);
-                    }
-                }
-                {
-                    //Move files and create image objects
-                    var files = Directory.GetFiles(imagesPath);
-                    foreach (var file in files)
-                    {
-                        for (int i = 0; i < ids.Length; i++)
-                        {
-                            if (filenames[i] == Path.GetFileName(file))
-                            {
-                                var image = new Image { Description = descriptions[i], Title = titles[i], ImageId = int.Parse(ids[i]), Gallery = gallery };
-                                db.ImageSet.Add(image);
-                                gallery.Images.Add(image);
-                                var destSource = Path.Combine(copyPath, ids[i]);
-                                System.IO.File.Move(file, destSource);
-                            }
-                        }
-                    }
-                    //Delete deleted object's file
-                    files = Directory.GetFiles(copyPath);
-                    foreach (var file in files)
-                    {
-                        if (!ids.Contains(Path.GetFileName(file)))
-                            System.IO.File.Delete(file);
-                    }
-                    
-                }
+
+                CreateCopyPath(copyPath);
+                MoveFilesCreateImages(gallery, ids, titles, descriptions, filenames, imagesPath, copyPath);
+                DeleteDeletedObjectFiles(ids, copyPath);
 
                 gallery.Category = GenerateGalleryCategories(path);
                 DeleteNotUsingCategories();
+
                 db.Entry(gallery).State = EntityState.Modified;
                 db.SaveChanges();
+
                 SendMessage(MessageType.Success, "The gallery successfully modified!");
                 return RedirectToAction("Index");
             }
             SendMessage(MessageType.Error, "Something went wrong! :( Try it again");           
             return View(gallery);
+        }
+
+        private static void DeleteDeletedObjectFiles(string[] ids, string copyPath)
+        {
+            //Delete deleted object's file
+            var files = Directory.GetFiles(copyPath);
+            foreach (var file in files)
+            {
+                if (!ids.Contains(Path.GetFileName(file)))
+                    System.IO.File.Delete(file);
+            }
         }
 
         //
@@ -220,7 +215,9 @@ namespace RallyPortal.Controllers
         public ActionResult Delete(int id)
         {
             Gallery gallery = db.GallerySet.Find(id);
-            SendMessage(MessageType.Warning, "If you delete the gallery, you cannot recover it later!");
+            ViewBag.GalleryPath = GenerateGalleryPath(gallery);
+            ViewBag.TopCategories = db.GalleryCategorySet.Where(category => category.Parent == null);
+
             return View(gallery);
         }
 
@@ -231,9 +228,19 @@ namespace RallyPortal.Controllers
         public ActionResult DeleteConfirmed(int id)
         {            
             Gallery gallery = db.GallerySet.Find(id);
+
+            foreach (var image in gallery.Images)
+            {
+                string path = Server.MapPath("~/Images/Galleries/" + gallery.Id + "/" + image.ImageId);
+                if (System.IO.File.Exists(path))
+                    System.IO.File.Delete(path);
+            }
+            
             db.GallerySet.Remove(gallery);
             DeleteNotUsingCategories();
+
             db.SaveChanges();
+
             SendMessage(MessageType.Success, "The gallery successfully deleted!");
             return RedirectToAction("Index");
         }

@@ -22,7 +22,7 @@
         <div id="top">
             <div class="content_pad">
                 <ul class="right">
-                    <li><span class="top_icon orange-colored"><span class="ui-icon ui-icon-person"></span>@Html.Partial("_LogOnPartial")</span></li>
+                    <li><span class="top_icon orange-colored"><span class="ui-icon ui-icon-person"></span>@Html.Partial("_LoginPartial")</span></li>
                 </ul>
             </div>
         </div>
@@ -60,7 +60,7 @@
             </div>
             <!-- .content_pad -->
         </div>
-        @if (((RallyPortal.MessageType?)ViewBag.GlobalMessageType).HasValue)
+        @if (ViewBag.GlobalMessageType != null)
         {
             <div style="width: 80%; margin: 5px auto;">
                 @Html.Partial("_messageBox", (RallyPortal.MessageType)ViewBag.GlobalMessageType)

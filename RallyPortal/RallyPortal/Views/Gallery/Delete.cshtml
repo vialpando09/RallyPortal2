@@ -1,33 +1,115 @@
 ﻿@model RallyPortal.Gallery
-
+@using Telerik.Web.Mvc.UI
+@using RallyPortal
 @{
     ViewBag.Title = "Delete";
+    var folder = "~/Images/Galleries/" + Model.Id + "/";
+    var topCategories = ((IEnumerable<RallyPortal.GalleryCategory>)ViewBag.TopCategories);
 }
 
-<h2>Delete</h2>
-
-<h3>Are you sure you want to delete this?</h3>
-<fieldset>
-    <legend>Gallery</legend>
-
-    <div class="display-label">Published</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Published)
-    </div>
-
-    <div class="display-label">Title</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Title)
-    </div>
-
-    <div class="display-label">Description</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Description)
-    </div>
-</fieldset>
-@using (Html.BeginForm()) {
-    <p>
-        <input type="submit" value="Delete" /> |
-        @Html.ActionLink("Back to List", "Index")
-    </p>
+@section featured {
+    @Html.Partial("_featured", new RallyPortal.Models.FeaturedData { ImageUrl = folder + "0", Title = Model.Title })
 }
+
+@section telerik {
+    @(Html.Telerik().StyleSheetRegistrar()
+                      .DefaultGroup(group => group
+                            .Add("telerik.common.css")
+                            .Add("telerik.sunset.min.css"))
+    )
+}
+
+@section telerikFooter {
+    @(Html.Telerik().ScriptRegistrar())
+}
+
+@section additionalCss {
+    <link href="@Url.Content("~/Content/lightbox.css")" rel="stylesheet" type="text/css" />
+}
+
+@section additionalScripts {
+}
+
+@section scripts {
+    <script src="@Url.Content("~/Scripts/lightbox.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $("#button").click(function () {
+            $("#categories").toggle('fast');
+        });
+
+        function treeView() {
+            return $('#TreeView').data('tTreeView');
+        }
+
+        function OnSelect(e) {
+            if (treeView().getItemValue(e.item) == "not") return;
+            var url = window.location.href;
+            var arr = url.split("/");
+            var result = arr[0] + "//" + arr[2]
+            var location = result + "/Gallery/Details/" + treeView().getItemValue(e.item);
+            window.location = location;
+        }
+
+    </script>
+}
+
+<div onclick="$(this).fadeOut('slow')" class="Box warningBox">
+    Are you sure you want to delete this?
+</div>
+<div class="delete">
+    @using (Html.BeginForm())
+    {
+        <input type="submit" value="Yes, delete it!" />
+        @Html.ActionLinkButton(Url.Action("Index"), "No, back to list!")
+    }
+</div>
+<div class="title main-title" style="cursor: pointer;" id="button">
+    Categories
+</div>
+<div id="categories" style="display: none;">
+    @(Html.Telerik().TreeView()
+        .Name("TreeView")
+        .ClientEvents(events => events
+            .OnSelect("OnSelect"))
+        .BindTo(topCategories, mappings =>
+        {
+            mappings.For<RallyPortal.GalleryCategory>(binding => binding
+                    .ItemDataBound((item, category) =>
+                    {
+                        item.Value = "not";
+                        item.Text = category.Title;
+                        item.ImageUrl = Url.Content("~/Content/Design/foldersList.gif");
+                    })
+                    .Children(category => ((IEnumerable<object>)category.SubCategories).Union((IEnumerable<object>)category.Galleries)));
+
+            mappings.For<RallyPortal.Gallery>(binding => binding
+                    .ItemDataBound((item, gallery) =>
+                    {
+                        item.Value = gallery.Id.ToString();
+                        item.Text = gallery.Title;
+                        item.ImageUrl = Url.Content("~/Content/Design/gallery.png");
+                    }));
+        })
+)
+</div>
+<div class="title module-blue">
+    <span>@Model.Title</span>
+</div>
+
+<h4>@Model.Description</h4>
+
+<div id="images">
+    @{
+        foreach (var image in Model.Images)
+        {
+        <div id="@image.ImageId" class="image-frame black-frame">
+            <input type="hidden" name="ids" id="ids-@image.ImageId" value="@image.ImageId" />
+            <input type="hidden" name="filenames" value="@image.ImageId" />
+            <div class="image">
+                <a href="@Url.Content("~/Images/Galleries/" + Model.Id + "/" + image.ImageId)" title="@image.Title - @image.Description" rel="lightbox[roadtrip]">
+                    <img src="@Url.Content("~/Images/Galleries/" + Model.Id + "/" + image.ImageId)" alt="" /></a>
+            </div>
+        </div>
+        }
+    }
+</div>

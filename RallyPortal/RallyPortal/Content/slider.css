@@ -1,0 +1,92 @@
+.ui-state-active, .ui-state-hover {
+    background-image: linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -o-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -moz-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -webkit-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -ms-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0.02, #0B85A7), color-stop(0.51, #0EAAD9) );
+}
+
+#slider ul li {
+    text-decoration: none;
+    color: #fff;
+    float: left;
+    position: absolute;
+    top: 276px;
+    padding: 0 10px;
+    z-index: 10;
+}
+
+#slider {
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    position: relative;
+    border-bottom: 1px solid #272727;
+}
+
+    #slider .data {
+        width: 980px;
+        margin: 0 auto;
+        font-size: 1.25em;
+        z-index: 4;
+    }
+
+        #slider .data .title {
+            float: left;
+            width: 857px;
+            padding: 10px 29px;
+            color: #fff;
+            background-color: rgba(0,0,0,.6);
+            position: relative;
+            top: -930px;
+            z-index: 5;
+        }
+
+        #slider .data .marker {
+            float: left;
+            width: 7px;
+            padding: 10px 29px;
+            color: #fff;
+            position: relative;
+            top: -930px;
+            opacity: 0.6;
+            z-index: 5;
+            filter: alpha(opacity=60); /* For IE8 and earlier */
+            background-image: linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+            background-image: -o-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+            background-image: -moz-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+            background-image: -webkit-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+            background-image: -ms-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+            background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0.02, #0B85A7), color-stop(0.51, #0EAAD9) );
+        }
+
+    #slider .wrapper {
+        overflow: hidden;
+        width: 100%;
+        background-color: #000;
+        height: 400px;
+        background-position: 50% 0%;
+    }
+
+    #slider .image {
+        margin: 0 auto;
+        overflow: hidden;
+        width: 1232px;
+        height: 400px;
+        background-position: 50% 50%;
+        background-color: #fff;
+        position: relative;
+        top: -400px;
+    }
+
+    #slider .fader {
+        margin: 0 auto;
+        overflow: hidden;
+        width: 1232px;
+        height: 400px;
+        background-image: url("./Design/fader.png");
+        background-position: 50% 0%;
+        position: relative;
+        top: -800px;
+    }

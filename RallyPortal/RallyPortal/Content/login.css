@@ -1,0 +1,34 @@
+﻿@import url(http://fonts.googleapis.com/css?family=Oswald:400,700);
+
+#loginForm, #socialLoginForm {
+    width: 50%;
+    padding: 0;
+    margin: 0;
+    float: left;
+}
+
+fieldset {
+    border: 1px solid #999;
+    border-radius: 15px;
+}
+
+legend {
+    font-weight: bold;
+    font-style: italic;
+    color: #666;
+}
+
+button {
+    width: 110px;
+}
+input[type="submit"],
+input[type="text"],
+input[type="password"],
+button {
+    display: block;
+    margin: 5px;
+    padding: 5px 15px;
+    border: 1px solid #000;
+    color: #fff;
+    background-color: teal;
+}

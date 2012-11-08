@@ -1,45 +1,32 @@
-﻿@model RallyPortal.Article
+﻿@model RallyPortal.Highlights
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = Model.Title;
 }
 
-<h2>Details</h2>
+@section featured {
+    @Html.Partial("_featured", new RallyPortal.Models.FeaturedData { ImageUrl = Model.ImageUrl, Title = Model.Title })
+}
 
-<fieldset>
-    <legend>Article</legend>
-
-    <div class="display-label">Title</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Title)
+<div class="entry">
+    <div class="inner1">
+        <div class="entry-image" style="background-image: url(@Url.Action("GetPhotoThumbnail",
+     new { path = Model.ImageUrl, width = 701 }));">
+        </div>
+        <div class="entry-title">Highlights: @Model.Title</div>
     </div>
-
-    <div class="display-label">Content</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Content)
+    <div class="inner5">
+        <p>@Html.Raw(HttpUtility.HtmlDecode(Model.Content))</p>
+        <p>@Html.Raw(Model.VideoUrl)</p>
     </div>
-
-    <div class="display-label">PublishedDate</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.PublishedDate)
+    <div class="inner2">
+        <div class="inner3">
+            By @Model.AuthorName, <span>@Model.LastModifiedDate.ToShortDateString()</span>
+        </div>
+        <div class="inner4">
+            <span class="comment">@Model.Comment.Count</span>
+        </div>
+        <div class="clear"></div>
     </div>
-
-    <div class="display-label">LastModifiedDate</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.LastModifiedDate)
-    </div>
-
-    <div class="display-label">Published</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Published)
-    </div>
-
-    <div class="display-label">ImageUrl</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.ImageUrl)
-    </div>
-</fieldset>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+</div>
+@Html.Partial("_comment", new RallyPortal.Models.CommentData { Id = Model.Id, Comments = Model.Comment })

@@ -51,9 +51,10 @@ jQuery('.accordion_container').accordion();
                             .OnSuccess(
                                 @<text>
                                     function(e) {
-                                        if(e.operation == "upload")
-                                            $("#showTeamImage").attr('src', "@Url.Content("~/Images/tempTeam")");
-                                        else
+                                        if(e.operation == "upload"){
+                                            var str = '@Url.Action("GetPhotoThumbnail", new { path = "~/Images/tempTeam", width = 400 })';
+                                            $("#showFeaturedImage").attr('src', str.replace('&amp;', '&'));
+                                        }else
                                             $("#showTeamImage").attr('src', "@Url.Content("~/Images/no_image.jpg")");
                                     }
                                 </text>
@@ -61,7 +62,8 @@ jQuery('.accordion_container').accordion();
                         )
                     )                    
                     <div>
-                        <img src="@Url.Content(Model.TeamImageUrl)" alt="" id="showTeamImage" />                        
+                        <img src="@Url.Action("GetPhotoThumbnail",
+     new { path = Model.TeamImageUrl, width = 400 })" alt="" id="showTeamImage" />                        
                     </div>
                 </div>
             </div>            
@@ -93,9 +95,10 @@ jQuery('.accordion_container').accordion();
                             .OnSuccess(
                                 @<text>
                                     function(e) {
-                                        if(e.operation == "upload")
-                                            $("#showDriverImage").attr('src', "@Url.Content("~/Images/tempDriver")");
-                                        else
+                                        if(e.operation == "upload"){
+                                            var str = '@Url.Action("GetPhotoThumbnail", new { path = "~/Images/tempDriver", width = 400 })';
+                                            $("#showFeaturedImage").attr('src', str.replace('&amp;', '&'));
+                                        } else
                                             $("#showDriverImage").attr('src', "@Url.Content("~/Images/no_image.jpg")");
                                     }
                                 </text>
@@ -103,7 +106,8 @@ jQuery('.accordion_container').accordion();
                         )
                     )                    
                     <div>
-                        <img src="@Url.Content(Model.DriverImageUrl)" alt="" id="showDriverImage" />                        
+                        <img src="@Url.Action("GetPhotoThumbnail",
+     new { path = Model.DriverImageUrl, width = 400 })" alt="" id="showDriverImage" />                        
                     </div>
                 </div>
             </div>            
@@ -135,9 +139,10 @@ jQuery('.accordion_container').accordion();
                             .OnSuccess(
                                 @<text>
                                     function(e) {
-                                        if(e.operation == "upload")
-                                            $("#showCoDriverImage").attr('src', "@Url.Content("~/Images/tempCoDriver")");
-                                        else
+                                        if(e.operation == "upload"){
+                                            var str = '@Url.Action("GetPhotoThumbnail", new { path = "~/Images/tempCoDriver", width = 400 })';
+                                            $("#showFeaturedImage").attr('src', str.replace('&amp;', '&'));
+                                        }else
                                             $("#showCoDriverImage").attr('src', "@Url.Content("~/Images/no_image.jpg")");
                                     }
                                 </text>
@@ -145,7 +150,8 @@ jQuery('.accordion_container').accordion();
                         )
                     )                    
                     <div>
-                        <img src="@Url.Content(Model.CoDriverImageUrl)" alt="" id="showCoDriverImage" />                        
+                        <img src="@Url.Action("GetPhotoThumbnail",
+     new { path = Model.CoDriverImageUrl, width = 400 })" alt="" id="showCoDriverImage" />                        
                     </div>
                 </div>
             </div>             

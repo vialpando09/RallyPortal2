@@ -1,0 +1,37 @@
+﻿@model RallyPortal.Models.CommentData
+<div class="title main-title">
+    related <span>comments</span>
+</div>
+@if (User.Identity.IsAuthenticated)
+{
+    using (Html.BeginForm("Comment", (string)ViewContext.RouteData.Values["Controller"]))
+    {
+    <input type="hidden" name="id" id="id" value="@Model.Id" />
+    <textarea placeholder="Type your comment here" name="message" style="width: 500px; margin-left: 20px; height: 110px;" cols="0" rows="0" id="message"></textarea>
+    <br />
+    <input type="submit" value="Post" />
+    }
+}
+else
+{
+    <h3>Login to post comment</h3>
+}
+<h4>We do not take responsibility for any comment on this site.</h4>
+@foreach (var comment in Model.Comments)
+{
+    <div class="comment-text">@comment.Content</div>
+    <div class="comment-data">
+        By @comment.AuthorName, @comment.PostDate.ToShortDateString()
+        @if (User.Identity.IsAuthenticated && (User.Identity.Name == comment.AuthorName || User.IsInRole("Administrator") || User.IsInRole("SuperAdministrator")))
+        {
+            <span style="float: right;">
+                @using (Html.BeginForm("DeleteComment", (string)ViewContext.RouteData.Values["Controller"]))
+                {
+                    <input type="hidden" name="commentId" id="commentId" value="@comment.Id" />
+                    <input type="hidden" name="articeId" id="articeId" value="@Model.Id" />
+                    <input type="submit" value="Delete" />    
+                }
+            </span>
+        }
+    </div>
+}

@@ -28,7 +28,7 @@ jQuery('.accordion_container').accordion();
     @Html.ValidationSummary(true)
     <input type="hidden" name="ImageUrl" id="ImageUrl" value="" />
     <input type="hidden" name="AuthorName" id="AuthorName" value="@User.Identity.Name" />
-    <input type="hidden" name="AuthorEmail" id="AuthorEmail" value="@Membership.GetUser().Email" />
+    <input type="hidden" name="AuthorEmail" id="AuthorEmail" value="@User.Identity.Name" />
     <div class="content_pad">
         <h3>Create</h3>
         <div class="accordion_container" style="min-height: 100%;">            
@@ -53,11 +53,13 @@ jQuery('.accordion_container').accordion();
                         .ClientEvents(events => events
                             .OnSuccess(
                                 @<text>
-                                    function(e) {
-                                        if(e.operation == "upload")
-                                            $("#showFeaturedImage").attr('src', "@Url.Content("~/Images/temp")");
+                    function(e) {
+                                        if(e.operation == "upload"){
+                                            var str = '@Url.Action("GetPhotoThumbnail", new { path = "~/Images/temp", width = 400 })';
+                                            $("#showFeaturedImage").attr('src', str.replace('&amp;', '&'));
+                                        }
                                         else
-                                            $("#showFeaturedImage").attr('src', "@Url.Content("~/Images/no_image.jpg")");
+                                            $("#showFeaturedImage").attr('src', '@Url.Content("~/Images/no_image.jpg")');
                                     }
                                 </text>
                             )

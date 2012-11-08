@@ -9,6 +9,7 @@ namespace RallyPortal
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            filters.Add(new LayoutSelectorActionFilterAttribute());
             filters.Add(new MessageActionFilterAttribute());
         }
     }

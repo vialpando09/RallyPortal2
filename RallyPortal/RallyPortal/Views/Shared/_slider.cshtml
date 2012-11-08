@@ -1,0 +1,37 @@
+﻿@model IEnumerable<RallyPortal.Article>
+
+
+<div id="slider">
+    <ul>
+        <li style="left: 984px;"><a href="#fragment-1">1</a></li>
+        <li style="left: 1020px;"><a href="#fragment-2">2</a></li>
+        <li style="left: 1056px;"><a href="#fragment-3">3</a></li>
+        <li style="left: 1092px;"><a href="#fragment-4">4</a></li>
+    </ul>
+    @{
+        int i = 1;
+        foreach (var article in Model)
+        {
+        <text>
+        <div id="fragment-@i">
+            <div class="wrapper"></div>
+            <div class="image" style="background-image: url(@Url.Action("GetPhotoThumbnail",
+     new { path = article.ImageUrl, width = 1232 }));">
+            </div>
+            <div class="fader"></div>
+            <div class="data">
+                <div class="marker">&raquo;</div>
+                <div class="title">
+                    @if (article is RallyPortal.Highlights)
+                    {
+                        <text>Highlights -</text>  
+                    }
+                    @article.Title
+                </div>
+            </div>
+        </div>
+        </text>
+                    i++;
+        }
+    }
+</div>

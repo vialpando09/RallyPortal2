@@ -1,48 +1,81 @@
 ﻿<!DOCTYPE html>
+@helper divider()
+{
+    <div class="divider-left"></div>
+    <div class="divider-right"></div>            
+}
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>@ViewBag.Title - My ASP.NET MVC Application</title>
-        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-        <meta name="viewport" content="width=device-width" />
-        @Styles.Render("~/Content/css")
-        @Scripts.Render("~/bundles/modernizr")
-    </head>
-    <body>
-        <header>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p class="site-title">@Html.ActionLink("your logo here", "Index", "Home")</p>
-                </div>
-                <div class="float-right">
-                    <section id="login">
-                        @Html.Partial("_LoginPartial")
-                    </section>
-                    <nav>
-                        <ul id="menu">
-                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                            <li>@Html.ActionLink("About", "About", "Home")</li>
-                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </header>
-        <div id="body">
-            @RenderSection("featured", required: false)
-            <section class="content-wrapper main-content clear-fix">
-                @RenderBody()
+<head>
+    <meta charset="utf-8" />
+    <title>RallyPortal - @ViewBag.Title</title>
+    @RenderSection("telerik", required: false)
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/jquery-ui-1.8.12.custom.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/slider.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/jquery-ui-1.8.12.custom.css")" rel="stylesheet" type="text/css" />
+    @RenderSection("additionalCss", required: false)
+    <script src="@Url.Content("~/Scripts/jquery-1.7.2.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.8.12.custom.min.js")" type="text/javascript"></script>
+    <link href='http://fonts.googleapis.com/css?family=Questrial|Droid+Sans|Alice' rel='stylesheet'
+        type='text/css' />
+    @RenderSection("additionalScripts", required: false)
+</head>
+<body>
+    <header>
+        <div class="main">
+            <h1>Rally<span>Portal</span>
+            </h1>
+            <section id="login">
+                @Html.Partial("_LoginPartial")
             </section>
         </div>
-        <footer>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - My ASP.NET MVC Application</p>
+    </header>
+    <section id="content">
+        <menu>
+            <div class="main">
+                @divider()
+                @Html.ActionLink("Home", "Index", "Home", null, null)
+                @if (User.IsInRole("Administrator") || User.IsInRole("SuperAdministrator"))
+                {
+                    @divider()
+                    @Html.ActionLink("Admin", "Index", "Admin", null, null)
+                }
+                @divider()
+                @Html.ActionLink("Highlights", "Highlights", "Home", null, null)
+                @divider()
+                @Html.ActionLink("News", "News", "Home", null, null)
+                @divider()
+                @Html.ActionLink("Galleries", "Galleries", "Home", null, null)
+                @divider()
+                @Html.ActionLink("Teams", "Teams", "Home", null, null)
+                @divider()
+                @Html.Partial("_search")
+            </div>
+        </menu>
+        @RenderSection("featured", required: false)
+        <div class="main-content">
+            <div class="left-side">
+                @if (ViewBag.GlobalMessageType != null)
+                {
+                    @Html.Partial("_messageBox", (RallyPortal.MessageType)ViewBag.GlobalMessageType)
+                }
+                @RenderBody()
+            </div>
+            <div class="right-side">
+                <div class="title module-blue">
+                    latest highlights
                 </div>
             </div>
-        </footer>
-
-        @Scripts.Render("~/bundles/jquery")
-        @RenderSection("scripts", required: false)
-    </body>
+        </div>
+    </section>
+    <footer>
+        <span style="float: left; margin: 20px; text-align: left;">copyright 2012 - RallyPortal</span>
+        <span onclick="$('body,html').animate({scrollTop: 0}, 'fast');" style=" margin-top: 20px; text-align: right; cursor: pointer; float: right;">Back to top...</span>
+    </footer>
+    @RallyPortal.Common.GooglePlusStatic()
+    @RenderSection("scripts", required: false)
+    @RenderSection("telerikFooter", required: false)
+</body>
 </html>

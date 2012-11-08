@@ -1,0 +1,75 @@
+﻿@model IEnumerable<RallyPortal.GalleryCategory>
+@using Telerik.Web.Mvc.UI
+@{
+    ViewBag.Title = "Galleries";
+}
+
+@section featured {
+    @Html.Partial("_featured", new RallyPortal.Models.FeaturedData { ImageUrl = "~/Images/login.jpg", Title = "Galleries" })
+}
+
+@section telerik {
+    @(Html.Telerik().StyleSheetRegistrar()
+                      .DefaultGroup(group => group
+                            .Add("telerik.common.css")
+                            .Add("telerik.sunset.min.css"))
+    )
+}
+
+@section telerikFooter {
+    @(Html.Telerik().ScriptRegistrar())
+}
+
+
+@section additionalScripts {
+}
+
+@section scripts {
+    <script type="text/javascript">
+
+        function treeView() {
+            return $('#TreeView').data('tTreeView');
+        }
+
+        function OnSelect(e) {
+            if (treeView().getItemValue(e.item) == "not") return;
+            var url = window.location.href;
+            var arr = url.split("/");
+            var result = arr[0] + "//" + arr[2]
+            var location = result + "/Gallery/Details/" + treeView().getItemValue(e.item);
+            window.location = location;
+        }
+
+    </script>
+}
+
+<div class="title main-title" style="cursor: pointer;" id="button">
+    Categories
+</div>
+<div id="categories">
+    @(Html.Telerik().TreeView()
+        .Name("TreeView")
+        .ExpandAll(true)
+        .ClientEvents(events => events
+            .OnSelect("OnSelect"))
+        .BindTo(Model, mappings =>
+        {
+            mappings.For<RallyPortal.GalleryCategory>(binding => binding
+                    .ItemDataBound((item, category) =>
+                    {
+                        item.Value = "not";
+                        item.Text = category.Title;
+                        item.ImageUrl = Url.Content("~/Content/Design/foldersList.gif");
+                    })
+                    .Children(category => ((IEnumerable<object>)category.SubCategories).Union((IEnumerable<object>)category.Galleries)));
+
+            mappings.For<RallyPortal.Gallery>(binding => binding
+                    .ItemDataBound((item, gallery) =>
+                    {
+                        item.Value = gallery.Id.ToString();
+                        item.Text = gallery.Title;
+                        item.ImageUrl = Url.Content("~/Content/Design/gallery.png");
+                    }));
+        })
+)
+</div>

@@ -1,0 +1,13 @@
+﻿<div id="paging">
+    @for (int i = 1; i < 10; i++)
+    {
+        if (i == (int)ViewBag.Page)
+        {
+        @Html.ActionLink(i.ToString(), ViewContext.RouteData.Values["Action"].ToString(), new { page = i - 1 }, new {  @class = "state-active"})
+        }
+        else
+        {
+        @Html.ActionLink(i.ToString(), ViewContext.RouteData.Values["Action"].ToString(), new { page = i - 1 })
+        }
+    }
+</div>

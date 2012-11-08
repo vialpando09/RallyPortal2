@@ -26,6 +26,16 @@ namespace RallyPortal
                 appId: "379528372129877",
                 appSecret: "0acf2b3aaa861030f91e1f640f50b1fe");
 
+            OAuthWebSecurity.RegisterLinkedInClient(
+                consumerKey: "aasdad",
+                consumerSecret: "asdasd");
+
+            OAuthWebSecurity.RegisterMicrosoftClient(
+                clientId: "asdasd",
+                clientSecret: "asdasdasd");
+
+            OAuthWebSecurity.RegisterYahooClient();
+
             OAuthWebSecurity.RegisterGoogleClient();
         }
     }
