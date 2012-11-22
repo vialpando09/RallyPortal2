@@ -21,7 +21,7 @@ namespace RallyPortal.Controllers
         public ActionResult Index()
         {
             ViewBag.SuperAdministrator = Roles.GetUsersInRole("SuperAdministrator").GetUserProfiles(userContext);
-            ViewBag.Administrator = Roles.GetUsersInRole("Administrator").GetUserProfiles(userContext);
+            ViewBag.Administrator = Roles.GetUsersInRole("Administrator").GetUsersNotInRoles( new string[] { "SuperAdministrator" }).GetUserProfiles(userContext);
             ViewBag.Reader = ((SimpleMembershipProvider)(Membership.Provider)).GetUsersNotInRoles(new string[] { "Administrator", "SuperAdministrator" }, userContext);
             
             return View();

@@ -250,11 +250,14 @@ namespace RallyPortal
 
         public static MvcHtmlString FacebookLink(string url)
         {
-            url = url.Replace(":", "%3A");
-            url = url.Replace("/", "%2F");
-
-            string fb = "<div style=\"float: left\"><iframe src=\"//www.facebook.com/plugins/like.php?href=" + url + "&amp;send=false&amp;layout=button_count&amp;width=80&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=35\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:80px; height:35px;\" allowTransparency=\"true\"></iframe></div>";
+            string fb = "<div style=\"float: left; width: 80px;\"><div class=\"fb-like\" data-href=\""+url+"\" data-send=\"false\" data-layout=\"button_count\" data-width=\"120\" data-show-faces=\"false\"></div></div>";
             return new MvcHtmlString(fb);
+        }
+
+        public static MvcHtmlString FacebookStatic()
+        {
+            string script = "<div id=\"fb-root\"></div><script>(function(d, s, id) {  var js, fjs = d.getElementsByTagName(s)[0];  if (d.getElementById(id)) return;  js = d.createElement(s); js.id = id;  js.src = \"//connect.facebook.net/en_GB/all.js#xfbml=1&appId=379528372129877\";  fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));</script>";
+            return new MvcHtmlString(script);
         }
 
         public static MvcHtmlString TwitterLink(string url)

@@ -32,7 +32,8 @@
                     <span id="title">Rally<span style="color: Teal;">Portal</span></span><br />
                     <span id="sub-title">Administration</span></h1>
                 <ul id="nav">
-                    <li class="nav_icon"><a href="@Url.Action("Index", "Home", null)"><span class="ui-icon ui-icon-home"></span>Home</a></li>
+                    <li class="nav_icon"><a href="@Url.Action("Index", "Home", null)"><span class="ui-icon ui-icon-home">
+                    </span>Home</a></li>
                     <li class="@{if ("Admin" == (string)ViewContext.RouteData.Values["controller"])
                                  { <text>nav_current </text>}}nav_icon"><a href="@Url.Action("Index", "Admin", null)">
                                      <span class="ui-icon ui-icon-wrench"></span>Admin</a></li>
@@ -48,6 +49,12 @@
                     <li class="@{if ("Team" == (string)ViewContext.RouteData.Values["controller"])
                                  { <text>nav_current </text>}}nav_icon"><a href="@Url.Action("Index", "Team", null)">
                                      <span class="ui-icon ui-icon-person"></span>Teams</a></li>
+                    @if (User.IsInRole("Administrator") || User.IsInRole("SuperAdministrator"))
+                    {
+                        <li class="@{if ("User" == (string)ViewContext.RouteData.Values["controller"])
+                                     { <text>nav_current </text>}}nav_icon"><a href="@Url.Action("Index", "User", null)">
+                                     <span class="ui-icon ui-icon-person"></span>Users</a></li>
+                    }
                 </ul>
             </div>
             <!-- .content_pad -->
@@ -68,7 +75,8 @@
         }
         @RenderBody()
     </div>
-    <div id="test"></div>
+    <div id="test">
+    </div>
     @RenderSection("AdditionScriptsEnd", false)
     @(Html.Telerik().ScriptRegistrar().jQuery(false)
         .OnDocumentReady(

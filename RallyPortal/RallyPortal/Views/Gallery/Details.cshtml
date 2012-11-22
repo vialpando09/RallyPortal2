@@ -95,7 +95,7 @@
             <input type="hidden" name="ids" id="ids-@image.ImageId" value="@image.ImageId" />
             <input type="hidden" name="filenames" value="@image.ImageId" />
             <div class="image">
-                <a href="@Url.Content("~/Images/Galleries/" + Model.Id + "/" + image.ImageId)" title="@image.Title - @image.Description" rel="lightbox[roadtrip]">
+                <a href="@Url.Action("GetPhotoThumbnail", new { path = "~/Images/Galleries/" + Model.Id + "/" + image.ImageId, width = 600 })" title="@image.Title - @image.Description" rel="lightbox[roadtrip]">
                     <img src="@Url.Content("~/Images/Galleries/" + Model.Id + "/" + image.ImageId)" alt="" /></a>
             </div>
         </div>

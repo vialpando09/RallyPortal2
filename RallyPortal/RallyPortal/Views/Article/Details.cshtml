@@ -8,6 +8,10 @@
     @Html.Partial("_featured", new RallyPortal.Models.FeaturedData { ImageUrl = Model.ImageUrl, Title = Model.Title })
 }
 
+@section metadata {
+    @Html.Partial("_metadata", Model)
+}
+
 <div class="entry">
     <div class="inner1">
         <div class="entry-image" style="background-image: url(@Url.Action("GetPhotoThumbnail",
@@ -15,20 +19,8 @@
         <div class="entry-title">@Model.Title</div>
     </div>
     <div class="inner5">
-        <p>@Html.Raw(HttpUtility.HtmlDecode(Model.Content))</p>
-        @{
-            string url;
-            if (Model is RallyPortal.Highlights)
-            {
-                url = Url.Action("Details", "Highlights", new { id = Model.Id });
-            }
-            else
-            {
-                url = Url.Action("Details", "Article", new { id = Model.Id });
-            }
-        }
-        @RallyPortal.Common.FacebookLink(url) @RallyPortal.Common.GooglePlusLink(url) @RallyPortal.Common.TwitterLink(url) @RallyPortal.Common.LinkedInLink(url)
-    </div>
+        <p>@Html.Raw(HttpUtility.HtmlDecode(Model.Content))</p>  
+        @Html.Partial("_social", Model) </div>
     <div class="inner2">
         <div class="inner3">
             By @Model.AuthorName, <span>@Model.LastModifiedDate.ToShortDateString()</span>

@@ -44,6 +44,20 @@ namespace RallyPortal.Controllers
             TempData["ViewBag.GlobalMessage"] = message;
         }
 
+        protected void SendMessageHere(MessageType type, string message)
+        {
+            ViewBag.GlobalMessageType = type;
+            if (type == MessageType.Error)
+                ViewBag.GlobalHeader = "Ooops!";
+            else if (type == MessageType.Information)
+                ViewBag.GlobalHeader = "Information.";
+            else if (type == MessageType.Success)
+                ViewBag.GlobalHeader = "Hooooray!!";
+            else if (type == MessageType.Warning)
+                ViewBag.GlobalHeader = "This is a warning!";
+            ViewBag.GlobalMessage = message;
+        }
+
         [AllowAnonymous()]
         public void GetPhotoThumbnail(string path, int width)
         {
@@ -59,6 +73,22 @@ namespace RallyPortal.Controllers
                 // Loading a default photo for realties that don't have a Photo
                 new WebImage(Server.MapPath(@"~/Images/no_image.jpg")).Write();
             }
+        }
+
+        [AllowAnonymous()]
+        public void DefaultData()
+        {
+            //Random Image
+            int count = db.ImageSet.Count();
+            int index = new Random().Next(count);
+
+            ViewBag.RandomImage = db.ImageSet.OrderBy(e => e.Id).Skip(index).FirstOrDefault();
+
+            //Latest Comments
+            ViewBag.LatestComments = db.CommentSet.OrderByDescending(e => e.Id).Take(4);
+
+            //Latest Galleries
+            ViewBag.LatestGalleries = db.GallerySet.OrderByDescending(e => e.Id).Take(4);
         }
     }
 }

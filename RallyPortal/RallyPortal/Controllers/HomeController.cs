@@ -9,31 +9,36 @@ namespace RallyPortal.Controllers
 {
     public class HomeController : BaseController
     {
+        private const int MAX_ARTICLE = 4;
+
         public ActionResult Index(int page = 0)
         {
-            int skip = page * 6 + 4;
+            int skip = page * MAX_ARTICLE + 4;
             ViewBag.Page = page + 1;
-            ViewBag.AllCount = (db.ArticleSet.OrderByDescending(e => e.LastModifiedDate).Where(e => e.Published).Count() - 4 ) / 6;
+            double allCount = (db.ArticleSet.Where(e => e.Published).Count() - 4 ) / (double)MAX_ARTICLE;
+            ViewBag.AllCount = Math.Ceiling(allCount);
             ViewBag.FirstFour = db.ArticleSet.OrderByDescending(e => e.LastModifiedDate).Where(e => e.Published).Take(4);
-            return View(db.ArticleSet.OrderByDescending(e => e.LastModifiedDate).Where(e => e.Published).Skip(page).Take(6));
+            return View(db.ArticleSet.OrderByDescending(e => e.LastModifiedDate).Where(e => e.Published).Skip(skip).Take(MAX_ARTICLE));
         }
 
         public ActionResult News(int page = 0)
         {
-            int skip = page * 6 + 4;
+            int skip = page * MAX_ARTICLE + 4;
             ViewBag.Page = page + 1;
-            ViewBag.AllCount = (db.ArticleSet.Where(e => !(e is Highlights)).OrderByDescending(e => e.LastModifiedDate).Where(e => e.Published).Count() - 4) / 6;
+            double allCount = (db.ArticleSet.Where(e => !(e is Highlights)).Where(e => e.Published).Count() - 4) / (double)MAX_ARTICLE;
+            ViewBag.AllCount = Math.Ceiling(allCount);
             ViewBag.FirstFour = db.ArticleSet.Where(e => !(e is Highlights)).OrderByDescending(e => e.LastModifiedDate).Where(e => e.Published).Take(4);
-            return View(db.ArticleSet.Where(e => !(e is Highlights)).OrderByDescending(e => e.LastModifiedDate).Where(e => e.Published).Skip(page).Take(6));
+            return View(db.ArticleSet.Where(e => !(e is Highlights)).OrderByDescending(e => e.LastModifiedDate).Where(e => e.Published).Skip(skip).Take(MAX_ARTICLE));
         }
 
         public ActionResult Highlights(int page = 0)
         {
-            int skip = page * 6 + 4;
+            int skip = page * MAX_ARTICLE + 4;
             ViewBag.Page = page + 1;
-            ViewBag.AllCount = (db.ArticleSet.Where(e => !(e is Highlights)).OrderByDescending(e => e.LastModifiedDate).Where(e => e.Published).Count() - 4) / 6;
+            double allCount = (db.ArticleSet.Where(e => (e is Highlights)).Where(e => e.Published).Count() - 4) / (double)MAX_ARTICLE;
+            ViewBag.AllCount = Math.Ceiling(allCount);
             ViewBag.FirstFour = db.ArticleSet.Where(e => (e is Highlights)).OrderByDescending(e => e.LastModifiedDate).Where(e => e.Published).Take(4);
-            return View(db.ArticleSet.Where(e => (e is Highlights)).OrderByDescending(e => e.LastModifiedDate).Where(e => e.Published).Skip(page).Take(6));
+            return View(db.ArticleSet.Where(e => (e is Highlights)).OrderByDescending(e => e.LastModifiedDate).Where(e => e.Published).Skip(skip).Take(MAX_ARTICLE));
         }
 
         public ActionResult Galleries()
@@ -43,12 +48,14 @@ namespace RallyPortal.Controllers
 
         public ActionResult Teams()
         {
-            return View(db.TeamSet.Select(e => new TeamData { CoDriver = e.CoDriverName, Driver = e.DriverName, TeamImageUrl = e.TeamImageUrl, TeamName = e.TeamName}));
+            return View(db.TeamSet.Select(e => new TeamData { CoDriver = e.CoDriverName, Driver = e.DriverName, TeamImageUrl = e.TeamImageUrl, TeamName = e.TeamName, Id = e.Id}));
         }
 
         [HttpPost]
         public ActionResult Search(string filter)
         {
+            ViewBag.Filter = filter;
+            ViewBag.FirstFour = db.ArticleSet.Where(e => (e is Highlights)).OrderByDescending(e => e.LastModifiedDate).Where(e => e.Published).Take(4);
             return View(db.ArticleSet.Where(e => e.Title.Contains(filter)).Union(db.ArticleSet.Where(e => e.Content.Contains(filter))));
         }
 

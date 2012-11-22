@@ -1,5 +1,5 @@
 ﻿<div id="paging">
-    @for (int i = 1; i < 10; i++)
+    @for (int i = 1; i <= (int)ViewBag.AllCount; i++)
     {
         if (i == (int)ViewBag.Page)
         {

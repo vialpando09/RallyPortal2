@@ -1,0 +1,24 @@
+﻿@model IQueryable<RallyPortal.Article>
+@{
+    ViewBag.Title = "Home Page";
+    var firstFour = ViewBag.FirstFour as IQueryable<RallyPortal.Article>;
+}
+
+
+@section additionalScripts {
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#slider").tabs({ fx: { opacity: "toggle"} }).tabs("rotate", 6000, true);
+        });
+    </script>
+}
+
+@section featured {
+    @Html.Partial("_slider", firstFour)        
+}
+<div class="title main-title" >
+    search for: <span>@ViewBag.Filter</span>
+</div>
+@Html.Partial("_entrylist", Model)
+

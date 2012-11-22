@@ -179,7 +179,8 @@ namespace RallyPortal.Controllers
                 DeleteCurrentFeaturedImage(sourcePath, destPath);
 
                 var success = MoveTempFeaturedImage(sourcePath, destPath);
-                CreateThumbnail(sourcePath, destPath, success);
+                if (System.IO.File.Exists(sourcePath))
+                    CreateThumbnail(sourcePath, destPath, success);
 
                 article.LastModifiedDate = DateTime.Now;
                 db.Entry(article).State = EntityState.Modified;

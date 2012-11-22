@@ -42,6 +42,7 @@ namespace RallyPortal.Models
         public string TeamName { get; set; }
         public string CoDriver { get; set; }
         public string Driver { get; set; }
+        public int Id { get; set; }
     }
 
     public class FeaturedData

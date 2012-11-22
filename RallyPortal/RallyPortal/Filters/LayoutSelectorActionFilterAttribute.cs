@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using RallyPortal.Controllers;
 
 namespace RallyPortal.Filters
 {
@@ -26,9 +27,14 @@ namespace RallyPortal.Filters
             string controllerName = (string)filterContext.RouteData.Values["controller"];
 
             dynamic viewBag = filterContext.Controller.ViewBag;
-            
-            if(controllerName == "Home"|| controllerName == "Account" || actionName == "Details" || actionName == "Delete")
+
+            if (controllerName == "Home" || controllerName == "Account" || actionName == "Details" || actionName == "Delete")
+            {
                 viewBag.Layout = "~/Views/Shared/_Layout.cshtml";
+
+                var baseController = (BaseController)filterContext.Controller;
+                baseController.DefaultData();
+            }
             else
                 viewBag.Layout = "~/Views/Shared/_Administration.cshtml";
             

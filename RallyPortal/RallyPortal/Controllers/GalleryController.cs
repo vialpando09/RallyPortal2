@@ -112,7 +112,14 @@ namespace RallyPortal.Controllers
                         db.ImageSet.Add(image);
                         gallery.Images.Add(image);
                         var destSource = Path.Combine(copyPath, ids[i]);
-                        System.IO.File.Move(file, destSource);
+                        try
+                        {
+                            System.IO.File.Move(file, destSource);
+                        }
+                        catch (Exception)
+                        {
+                            SendMessage(MessageType.Warning, "Some picture did not uploaded correctly! Try them again!");
+                        }
                     }
                 }
             }
@@ -185,10 +192,14 @@ namespace RallyPortal.Controllers
                 MoveFilesCreateImages(gallery, ids, titles, descriptions, filenames, imagesPath, copyPath);
                 DeleteDeletedObjectFiles(ids, copyPath);
 
-                gallery.Category = GenerateGalleryCategories(path);
-                DeleteNotUsingCategories();
+                var category = GenerateGalleryCategories(path);
+                gallery.Category = category;
+                gallery.GalleryCategoryId = category.Id;
 
                 db.Entry(gallery).State = EntityState.Modified;
+                db.SaveChanges();
+
+                DeleteNotUsingCategories();
                 db.SaveChanges();
 
                 SendMessage(MessageType.Success, "The gallery successfully modified!");
@@ -303,10 +314,13 @@ namespace RallyPortal.Controllers
                 if (toDeleteCategories.Length == 0)
                     flag = false;
                 else
+                {
                     foreach (var category in toDeleteCategories)
                     {
                         db.GalleryCategorySet.Remove(category);
                     }
+                    db.SaveChanges();
+                }
             }
         }
 

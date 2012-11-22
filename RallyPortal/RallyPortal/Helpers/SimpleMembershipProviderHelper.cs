@@ -26,6 +26,17 @@ namespace RallyPortal.Helpers
             return userContext.UserProfiles.Where(user => !usersArray.Contains(user.UserName));
         }
 
+        public static string[] GetUsersNotInRoles(this string[] currentUsers, string[] roles)
+        {
+            List<string> users = new List<string>();
+            foreach (var role in roles)
+            {
+                users.AddRange(Roles.GetUsersInRole(role));
+            }
+            var usersArray = users.ToArray();
+            return currentUsers.Where(user => !usersArray.Contains(user)).ToArray();
+        }
+
         public static IEnumerable<UserProfile> GetAllUsers(this SimpleMembershipProvider provider, UsersContext userContext)
         {
             return userContext.UserProfiles;

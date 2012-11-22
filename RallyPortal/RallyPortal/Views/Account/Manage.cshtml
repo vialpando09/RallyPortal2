@@ -3,9 +3,13 @@
     ViewBag.Title = "Manage Account";
 }
 
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-</hgroup>
+@section featured {
+    @Html.Partial("_featured", new RallyPortal.Models.FeaturedData { Title = "Create a new account", ImageUrl = "~/Images/login.jpg" })
+}
+
+<div class="title main-title">
+    Manage <span>Account</span>
+</div>
 
 <p class="message-success">@ViewBag.StatusMessage</p>
 

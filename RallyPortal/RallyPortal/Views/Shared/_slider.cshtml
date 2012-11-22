@@ -3,10 +3,10 @@
 
 <div id="slider">
     <ul>
-        <li style="left: 984px;"><a href="#fragment-1">1</a></li>
-        <li style="left: 1020px;"><a href="#fragment-2">2</a></li>
-        <li style="left: 1056px;"><a href="#fragment-3">3</a></li>
-        <li style="left: 1092px;"><a href="#fragment-4">4</a></li>
+        <li style="left: 964px;"><a href="#fragment-1">1</a></li>
+        <li style="left: 1000px;"><a href="#fragment-2">2</a></li>
+        <li style="left: 1036px;"><a href="#fragment-3">3</a></li>
+        <li style="left: 1072px;"><a href="#fragment-4">4</a></li>
     </ul>
     @{
         int i = 1;
@@ -22,11 +22,15 @@
             <div class="data">
                 <div class="marker">&raquo;</div>
                 <div class="title">
+                    
                     @if (article is RallyPortal.Highlights)
                     {
-                        <text>Highlights -</text>  
+                        <text>@Html.ActionLink("Highlights - " + article.Title, "Details", "Highlights", new { id = article.Id }, new { @class = "titlehref"})</text>  
                     }
-                    @article.Title
+                    else
+                    {
+                        <text>@Html.ActionLink(article.Title, "Details", "Article", new { id = article.Id }, new { @class = "titlehref" })</text>  
+                    }
                 </div>
             </div>
         </div>

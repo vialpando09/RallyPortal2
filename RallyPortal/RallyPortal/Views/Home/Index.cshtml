@@ -1,7 +1,7 @@
-﻿@model IEnumerable<RallyPortal.Article>
+﻿@model IQueryable<RallyPortal.Article>
 @{
     ViewBag.Title = "Home Page";
-    var firstFour = ViewBag.FirstFour as IEnumerable<RallyPortal.Article>;
+    var firstFour = ViewBag.FirstFour as IQueryable<RallyPortal.Article>;
 }
 
 

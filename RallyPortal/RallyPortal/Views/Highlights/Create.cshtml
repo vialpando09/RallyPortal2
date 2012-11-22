@@ -53,11 +53,13 @@ jQuery('.accordion_container').accordion();
                         .ClientEvents(events => events
                             .OnSuccess(
                                 @<text>
-                                    function(e) {
-                                        if(e.operation == "upload")
-                                            $("#showFeaturedImage").attr('src', "@Url.Content("~/Images/temp")");
+                    function(e) {
+                                        if(e.operation == "upload"){
+                                            var str = '@Url.Action("GetPhotoThumbnail", new { path = "~/Images/temp", width = 400 })';
+                                            $("#showFeaturedImage").attr('src', str.replace('&amp;', '&'));
+                                        }
                                         else
-                                            $("#showFeaturedImage").attr('src', "@Url.Content("~/Images/no_image.jpg")");
+                                            $("#showFeaturedImage").attr('src', '@Url.Content("~/Images/no_image.jpg")');
                                     }
                                 </text>
                             )

@@ -1,12 +1,16 @@
-﻿<!DOCTYPE html>
+﻿@using RallyPortal
+<!DOCTYPE html>
 @helper divider()
-{
-    <div class="divider-left"></div>
-    <div class="divider-right"></div>            
+    {
+    <div class="divider-left">
+    </div>
+    <div class="divider-right">
+    </div>            
 }
-<html lang="en">
+<html lang="en" xmlns:og="http://opengraphprotocol.org/schema/" xmlns:fb="http://www.facebook.com/2008/fbml">
 <head>
     <meta charset="utf-8" />
+    @RenderSection("metadata", required: false)
     <title>RallyPortal - @ViewBag.Title</title>
     @RenderSection("telerik", required: false)
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
@@ -23,6 +27,7 @@
     @RenderSection("additionalScripts", required: false)
 </head>
 <body>
+    @RallyPortal.Common.FacebookStatic()
     <header>
         <div class="main">
             <h1>Rally<span>Portal</span>
@@ -65,14 +70,67 @@
             </div>
             <div class="right-side">
                 <div class="title module-blue">
-                    latest highlights
+                    official website
                 </div>
+                <div class="module-content">
+                    <a href="www.wrc.com" target="_blank">
+                        <img src="@Url.Content("~/Images/wrc-logo.gif")" alt="Official Website" />
+                    </a>
+                </div>
+                <div class="title module-blue">
+                    random picture
+                </div> 
+                <div class="module-content">
+                    @{
+                        var randomImage = (RallyPortal.Image)ViewBag.RandomImage;
+                     }
+                    <img src="@Url.Action("GetPhotoThumbnail", new { path = "~/Images/Galleries/" + randomImage.GalleryId + "/" + randomImage.ImageId, width = 200 })" alt="@randomImage.Title @randomImage.Description"/>
+                    @Html.ActionLinkButton(Url, "Details", "Gallery", new { id = randomImage.GalleryId }, "Go to the gallery")
+                </div>
+                <div class="title module-black">
+                    latest galleries
+                </div> 
+                <div class="module-content">
+                <ul>
+                    @{
+                        var latestGalleries = (IQueryable<RallyPortal.Gallery>)ViewBag.LatestGalleries;
+                    }
+                    @foreach (var item in latestGalleries)
+                    {
+                        <li><b>@Html.ActionLink(item.Title, "Details", "Gallery", new { id = item.Id }, null)</b><br /><i>@item.Description</i></li>
+                    }
+                </ul>
+                </div>
+                <div class="title module-black">
+                    latest comments                    
+                </div> 
+                <div class="module-content">
+                <ul>
+                    @{
+                        var latestComments = (IQueryable<RallyPortal.Comment>)ViewBag.LatestComments;
+                    }
+                    @foreach (var item in latestComments)
+                    {
+                        string controller = item.Article is RallyPortal.Highlights ? "Highlights" : "Article";
+                        <li><b>@Html.ActionLink("Re: " + item.Article.Title, "Details", controller, new { id = item.Id }, null)</b><br /><i>@item.Content.Substring(0, 20 > item.Content.Length ? item.Content.Length : 20) ...</i><br /><span>By @item.AuthorName, @item.PostDate</span></li>
+                    }
+                </ul>
+                </div>                          
             </div>
         </div>
     </section>
     <footer>
-        <span style="float: left; margin: 20px; text-align: left;">copyright 2012 - RallyPortal</span>
-        <span onclick="$('body,html').animate({scrollTop: 0}, 'fast');" style=" margin-top: 20px; text-align: right; cursor: pointer; float: right;">Back to top...</span>
+        <span style="float: left; margin: 20px; text-align: left;"> 
+            @Html.ActionLink("Home", "Index", "Home", null, null) | 
+            @if (User.IsInRole("Administrator") || User.IsInRole("SuperAdministrator"))
+            {
+                <text>@Html.ActionLink("Admin", "Index", "Admin", null, null) | </text>
+            }
+            @Html.ActionLink("Highlights", "Highlights", "Home", null, null) | 
+            @Html.ActionLink("News", "News", "Home", null, null) |
+            @Html.ActionLink("Galleries", "Galleries", "Home", null, null) | 
+            @Html.ActionLink("Teams", "Teams", "Home", null, null)<br /><span style="font-size: 11px; font-style: italic;">copyright 2012 - RallyPortal :: Created by Vialpando</span></span>
+        <span onclick="$('body,html').animate({scrollTop: 0}, 'fast');" style=" margin: 20px; text-align: right; cursor: pointer; float: right;">Back to top...</span>
     </footer>
     @RallyPortal.Common.GooglePlusStatic()
     @RenderSection("scripts", required: false)

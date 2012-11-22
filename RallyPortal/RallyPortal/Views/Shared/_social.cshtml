@@ -1,0 +1,15 @@
+﻿@model RallyPortal.Article
+
+@{
+    string url;
+    if (Model is RallyPortal.Highlights)
+    {
+        url = Url.Action("Details", "Highlights", new { id = Model.Id });
+    }
+    else
+    {
+        url = Url.Action("Details", "Article", new { id = Model.Id });
+    }
+}
+@RallyPortal.Common.FacebookLink(url) @RallyPortal.Common.GooglePlusLink(url) @RallyPortal.Common.TwitterLink(url)
+@RallyPortal.Common.LinkedInLink(url)

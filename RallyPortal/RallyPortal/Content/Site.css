@@ -1,10 +1,41 @@
 ﻿@import url(http://fonts.googleapis.com/css?family=Oswald:400,700);
 
-footer {
+
+.module-content 
+{
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-radius: 0 0 4px 4px;
+    border-bottom: 1px solid #ccc;
+}
+
+.module-content ul 
+{
+    list-style-type: square;
+    text-align: left;
+    font-size: 12px;
+    position: relative;
+    left: -15px;
+}
+
+.module-content ul li 
+{
+    padding: 0;
+}
+
+.module-content ul li span
+{
+    font-size: 10px;
+}
+
+footer
+{
     font-family: Verdana;
 }
 
-footer, .main-content {
+footer, .main-content
+{
     -webkit-box-shadow: 0px 0px 15px 0px rgba(255,255,190, .75);
     -moz-box-shadow: 0px 0px 15px 0px rgba(255,255,190, .75);
     -ms-box-shadow: 0px 0px 15px 0px rgba(255,255,190, .75);
@@ -12,56 +43,75 @@ footer, .main-content {
     -o-box-shadow: 0px 0px 15px 0px rgba(255,255,190, .75);
 }
 
-#paging {
+footer a 
+{
+    color: #fff;
+}
+
+footer a:hover
+{
+    text-decoration: none;
+}
+
+#paging
+{
     width: 100%;
     text-align: left;
     padding: 5px;
 }
 
-    #paging a {
-        color: #1c1c1c;
-        padding: 5px 10px;
-    }
+#paging a
+{
+    color: #1c1c1c;
+    padding: 5px 10px;
+}
 
-        #paging a:hover {
-            color: #fff;
-            background-image: linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
-            background-image: -o-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
-            background-image: -moz-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
-            background-image: -webkit-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
-            background-image: -ms-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
-            background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0.02, #0B85A7), color-stop(0.51, #0EAAD9) );
-        }
+#paging a:hover
+{
+    color: #fff;
+    background-image: linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -o-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -moz-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -webkit-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -ms-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0.02, #0B85A7), color-stop(0.51, #0EAAD9) );
+}
 
-    #paging .state-active {
-        padding: 5px 10px;
-        color: #fff;
-        background-image: linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
-        background-image: -o-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
-        background-image: -moz-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
-        background-image: -webkit-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
-        background-image: -ms-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
-        background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0.02, #0B85A7), color-stop(0.51, #0EAAD9) );
-    }
+#paging .state-active
+{
+    padding: 5px 10px;
+    color: #fff;
+    background-image: linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -o-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -moz-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -webkit-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -ms-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0.02, #0B85A7), color-stop(0.51, #0EAAD9) );
+}
 
-#search {
+#search
+{
     float: right;
     padding: 10px 0;
 }
 
-    #search input {
-        display: inline;
-        width: initial;
-        padding: 5px 10px;
-    }
+#search input
+{
+    display: inline;
+    width: initial;
+    min-width: 0px;
+    padding: 5px 10px;
+}
 
-#categories {
+#categories
+{
     font-family: sans-serif;
     font-size: 12px;
     padding: 20px;
 }
 
-#images .deleteORcancel {
+#images .deleteORcancel
+{
     margin: 7px;
     cursor: pointer;
     border: 1px solid #ccc;
@@ -73,18 +123,21 @@ footer, .main-content {
 }
 
 
-    #images .deleteORcancel:hover {
-        background-color: Olive;
-        -webkit-transition-duration: 0.2s;
-        -moz-transition-duration: 0.2s;
-        transition-duration: 0.2s;
-    }
+#images .deleteORcancel:hover
+{
+    background-color: Olive;
+    -webkit-transition-duration: 0.2s;
+    -moz-transition-duration: 0.2s;
+    transition-duration: 0.2s;
+}
 
-#images .opacity-frame {
+#images .opacity-frame
+{
     opacity: 0.4;
 }
 
-#images .image-frame {
+#images .image-frame
+{
     padding: 3px 3px 0px 3px;
     background-color: #1c1c1c;
     width: 22%;
@@ -95,84 +148,95 @@ footer, .main-content {
     margin: 10px;
 }
 
-    #images .image-frame a {
-        margin: 0;
-        padding: 0;
-    }
+#images .image-frame a
+{
+    margin: 0;
+    padding: 0;
+}
 
-#images img {
+#images img
+{
     opacity: 0.4;
 }
 
-    #images img:hover {
-        opacity: 1.0;
-    }
+#images img:hover
+{
+    opacity: 1.0;
+}
 
-#images .green-frame {
+#images .green-frame
+{
     border-color: #4F8A10;
     background-color: #DFF2BF;
 }
 
-#images .gray-frame {
+#images .gray-frame
+{
     border-color: #CCC;
     background-color: #fff;
 }
 
-#images .black-frame {
+#images .black-frame
+{
     border-color: #333;
     background-color: #fff;
 }
 
-#images .image-frame .image,
-#images .image-frame .title,
-#images .image-frame .description {
+#images .image-frame .image, #images .image-frame .title, #images .image-frame .description
+{
     text-align: center;
 }
 
-    #images .image-frame .image img {
-        width: 190px;
-        height: 150px;
-    }
+#images .image-frame .image img
+{
+    width: 190px;
+    height: 150px;
+}
 
-    #images .image-frame .title input,
-    #images .image-frame .description input {
-        width: 190px;
-    }
+#images .image-frame .title input, #images .image-frame .description input
+{
+    width: 190px;
+}
 
-#images {
+#images
+{
     font-family: sans-serif;
 }
 
-#login {
+#login
+{
     float: right;
     position: relative;
     top: 60px;
     color: #fff;
 }
 
-    #login a {
-        display: inline-block;
-        color: #0EACDA;
-        text-decoration: none;
-        -webkit-transition: all 0.4s ease;
-        -moz-transition: all 0.4s ease;
-        -o-transition: all 0.4s ease;
-        transition: all 0.4s ease;
-        margin-left: 3px;
-        line-height: 15px;
-    }
+#login a
+{
+    display: inline-block;
+    color: #0EACDA;
+    text-decoration: none;
+    -webkit-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+    margin-left: 3px;
+    line-height: 15px;
+}
 
-        #login a:hover {
-            color: #fff;
-            text-decoration: none;
-            -webkit-transition: all 0.4s ease;
-            -moz-transition: all 0.4s ease;
-            -o-transition: all 0.4s ease;
-            transition: all 0.4s ease;
-        }
+#login a:hover
+{
+    color: #fff;
+    text-decoration: none;
+    -webkit-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+}
 
 
-.infoBox, .successBox, .warningBox, .errorBox, .validationBox {
+.infoBox, .successBox, .warningBox, .errorBox, .validationBox
+{
     border: 1px solid;
     margin: 3px 0px;
     padding: 15px 10px 15px 50px;
@@ -180,38 +244,44 @@ footer, .main-content {
     background-position: 10px center;
 }
 
-.infoBox {
+.infoBox
+{
     color: #00529B;
     background-color: #BDE5F8;
     background-image: url('./themes/main/info_icon.png');
 }
 
-.successBox {
+.successBox
+{
     color: #4F8A10;
     background-color: #DFF2BF;
     background-image: url('./themes/main/success_icon.png');
 }
 
-.warningBox {
+.warningBox
+{
     color: #9F6000;
     background-color: #FEEFB3;
     background-image: url('./themes/main/warning_icon.png');
 }
 
-.errorBox {
+.errorBox
+{
     color: #D8000C;
     background-color: #FFBABA;
     background-image: url('./themes/main/error_icon.png');
 }
 
-#loginForm, #socialLoginForm {
+#loginForm, #socialLoginForm
+{
     width: 50%;
     padding: 0;
     margin: 0;
     float: left;
 }
 
-.comment-text {
+.comment-text
+{
     background: #fff;
     overflow: hidden;
     padding: 12px 15px 11px;
@@ -222,18 +292,34 @@ footer, .main-content {
     font: 12px/19px Arial, Helvetica, sans-serif;
 }
 
-input[type="submit"],
-input[type="button"], button {
+input[type="submit"], input[type="button"], button
+{
     padding: 5px 20px;
     min-width: 110px;
     border: 1px solid black;
     color: white;
     text-align: center;
     background-color: #0B89AD;
+    -webkit-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    transition: all 0.4s ease;
 }
 
-input[type="password"],
-input[type="text"] {
+input[type="submit"]:hover, input[type="button"]:hover, button:hover
+{
+    border: 1px solid black;
+    color: #000;
+    text-align: center;
+    background-color: #efef55;
+    -webkit-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+}
+
+input[type="password"], input[type="text"]
+{
     display: block;
     padding: 3px;
     width: 190px;
@@ -242,11 +328,13 @@ input[type="text"] {
     color: #636363;
 }
 
-.comment-data input[type="submit"] {
+.comment-data input[type="submit"]
+{
     background-color: #666;
 }
 
-.comment-data {
+.comment-data
+{
     background-color: #0B89AD;
     overflow: hidden;
     padding: 12px 15px 11px;
@@ -257,43 +345,47 @@ input[type="text"] {
     font: 12px/19px Arial, Helvetica, sans-serif;
 }
 
-.entry {
-    overflow: hidden;
+.entry
+{
     border-bottom: 1px solid #E5E5E5;
     margin-bottom: 15px;
     color: #fff;
     font: 12px/19px Arial, Helvetica, sans-serif;
 }
 
-.inner1 {
+.inner1
+{
     position: relative;
     overflow: hidden;
     height: 237px;
 }
 
-    .inner1 .entry-image {
-        width: 700px;
-        height: 237px;
-        overflow: hidden;
-        background-position: 50% 50%;
-    }
+.inner1 .entry-image
+{
+    width: 700px;
+    height: 237px;
+    overflow: hidden;
+    background-position: 50% 50%;
+}
 
-    .inner1 .entry-title {
-        background: rgba(0,0,0,.6);
-        top: -42px;
-        color: white;
-        display: block;
-        font-family: 'Oswald',sans-serif;
-        font-size: 15px;
-        padding: 12px 0px 11px 15px;
-        position: relative;
-        text-transform: uppercase;
-        width: 100%;
-        word-spacing: 1px;
-        z-index: 5;
-    }
+.inner1 .entry-title
+{
+    background: rgba(0,0,0,.6);
+    top: -42px;
+    color: white;
+    display: block;
+    font-family: 'Oswald' ,sans-serif;
+    font-size: 15px;
+    padding: 12px 0px 11px 15px;
+    position: relative;
+    text-transform: uppercase;
+    width: 100%;
+    word-spacing: 1px;
+    z-index: 5;
+}
 
-.inner2 {
+.inner2
+{
     background: #292929;
     overflow: hidden;
     padding: 12px 15px 11px;
@@ -302,28 +394,33 @@ input[type="text"] {
     border-radius: 0 0 4px 4px;
 }
 
-.inner3 {
+.inner3
+{
     float: left;
     color: white;
     font-weight: bold;
 }
 
-    .inner3 span {
-        color: #0EACDA;
-    }
+.inner3 span
+{
+    color: #0EACDA;
+}
 
-.inner4 {
+.inner4
+{
     float: right;
     padding: 2px 0 0;
 }
 
-.inner5 {
+.inner5
+{
     border: 1px solid #666;
     padding: 15px;
     color: #666;
 }
 
-.comment {
+.comment
+{
     background: url("Design/comment.png") no-repeat scroll 0 2px transparent;
     display: inline-block;
     height: 19px;
@@ -332,7 +429,8 @@ input[type="text"] {
     padding-left: 27px;
 }
 
-.main-content a {
+.main-content a
+{
     display: inline-block;
     color: #0EACDA;
     text-decoration: none;
@@ -346,20 +444,23 @@ input[type="text"] {
     line-height: 15px;
 }
 
-    .main-content a:hover {
-        color: #303030;
-        text-decoration: none;
-        -webkit-transition: all 0.4s ease;
-        -moz-transition: all 0.4s ease;
-        -o-transition: all 0.4s ease;
-        transition: all 0.4s ease;
-    }
+.main-content a:hover
+{
+    color: #303030;
+    text-decoration: none;
+    -webkit-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+}
 
-figure {
+figure
+{
     margin: 0;
 }
 
-.main-content {
+.main-content
+{
     position: relative;
     display: table;
     top: -60px;
@@ -368,11 +469,12 @@ figure {
     width: 960px;
     margin: 0 auto;
     padding: 20px 10px 22px;
-    z-index: 15;
+    z-index: 0;
     border-bottom: 1px solid #1c1c1c;
 }
 
-.right-side {
+.right-side
+{
     display: inline-table;
     width: 220px;
     background-color: #fff;
@@ -381,7 +483,8 @@ figure {
     position: relative;
 }
 
-.left-side {
+.left-side
+{
     display: inline-table;
     width: 700px;
     background-color: #fff;
@@ -390,16 +493,17 @@ figure {
     position: relative;
 }
 
-    .right-side .title,
-    .left-side .title {
-        padding: 15px 19px 17px;
-        border-radius: 4px;
-        margin-bottom: 10px;
-        text-transform: uppercase;
-        font-size: 18px;
-    }
+.right-side .title, .left-side .title
+{
+    padding: 15px 19px 17px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    font-size: 18px;
+}
 
-.main-title {
+.main-title
+{
     border-bottom: 1px solid #E5E5E5;
     color: #323232;
     background-image: linear-gradient(bottom, #FFFFFF 2%, #DFDFDF 51%);
@@ -410,11 +514,13 @@ figure {
     background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0.02, #FFFFFF), color-stop(0.51, #DFDFDF) );
 }
 
-    .main-title span {
-        color: #0EACDA;
-    }
+.main-title span
+{
+    color: #0EACDA;
+}
 
-.module-blue {
+.module-blue
+{
     border-bottom: 1px solid #0B89AD;
     color: #fff;
     background-image: linear-gradient(bottom, #0EAAD9 2%, #0B82A6 51%);
@@ -425,8 +531,10 @@ figure {
     background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0.02, #0EAAD9), color-stop(0.51, #0B82A6) );
 }
 
-.module-black {
+.module-black
+{
     border-bottom: 1px solid #252525;
+    color: #fff;
     background-image: linear-gradient(bottom, #212121 2%, #181818 51%);
     background-image: -o-linear-gradient(bottom, #212121 2%, #181818 51%);
     background-image: -moz-linear-gradient(bottom, #212121 2%, #181818 51%);
@@ -435,7 +543,8 @@ figure {
     background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0.02, #212121), color-stop(0.51, #181818) );
 }
 
-footer {
+footer
+{
     padding: 15px 15px;
     height: 77px;
     width: 950px;
@@ -455,87 +564,109 @@ footer {
     background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0.02, #0EAAD9), color-stop(0.51, #0B82A6) );
 }
 
-.slider {
+.slider
+{
     width: 100%;
     height: 400px;
     overflow: hidden;
     border-bottom: 1px solid #272727;
 }
 
-    .slider .data {
-        width: 980px;
-        margin: 0 auto;
-        font-size: 1.25em;
-    }
+.slider .data
+{
+    width: 980px;
+    margin: 0 auto;
+    font-size: 1.25em;
+}
 
-        .slider .data .title {
-            float: left;
-            width: 857px;
-            padding: 10px 29px;
-            color: #fff;
-            background-color: #000;
-            position: relative;
-            top: -130px;
-            opacity: 0.6;
-            filter: alpha(opacity=60); /* For IE8 and earlier */
-        }
+.slider .data .title
+{
+    float: left;
+    width: 857px;
+    padding: 10px 29px;
+    color: #fff;
+    background-color: #000;
+    position: relative;
+    top: -130px;
+    opacity: 0.6;
+    filter: alpha(opacity=60); /* For IE8 and earlier */
+}
 
-            .slider .data .title .pages {
-                float: right;
-                height: 100%;
-            }
+.slider .data .title .pages
+{
+    float: right;
+    height: 100%;
+}
+.titlehref
+{
+    padding: 0;
+    text-decoration: none;
+    color: #fff;
+}
 
-                .slider .data .title .pages a {
-                    padding: 0px 10px;
-                    text-decoration: none;
-                    color: #fff;
-                    float: left;
-                    padding: 0 10px;
-                }
+.titlehref:hover
+{
+    padding: 0;
+    text-decoration: underline;
+    color: #fff;
+}
 
-                    .slider .data .title .pages a:hover {
-                        background-image: linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
-                        background-image: -o-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
-                        background-image: -moz-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
-                        background-image: -webkit-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
-                        background-image: -ms-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
-                        background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0.02, #0B85A7), color-stop(0.51, #0EAAD9) );
-                    }
+.slider .data .title .pages a
+{
+    padding: 0px 10px;
+    text-decoration: none;
+    color: #fff;
+    float: left;
+    padding: 0 10px;
+}
 
-        .slider .data .marker {
-            float: left;
-            width: 7px;
-            padding: 10px 29px;
-            color: #fff;
-            position: relative;
-            top: -130px;
-            opacity: 0.6;
-            filter: alpha(opacity=60); /* For IE8 and earlier */
-            background-image: linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
-            background-image: -o-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
-            background-image: -moz-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
-            background-image: -webkit-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
-            background-image: -ms-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
-            background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0.02, #0B85A7), color-stop(0.51, #0EAAD9) );
-        }
+.slider .data .title .pages a:hover
+{
+    background-image: linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -o-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -moz-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -webkit-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -ms-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0.02, #0B85A7), color-stop(0.51, #0EAAD9) );
+}
 
-    .slider .image {
-        overflow: hidden;
-        width: 100%;
-        height: 400px;
-        background-image: url(http://static.livedemo00.template-help.com/wt_40891/images/slide-1.jpg);
-        background-position: 50% 0%;
-        background-repeat: no-repeat no-repeat;
-    }
+.slider .data .marker
+{
+    float: left;
+    width: 7px;
+    padding: 10px 29px;
+    color: #fff;
+    position: relative;
+    top: -130px;
+    opacity: 0.6;
+    filter: alpha(opacity=60); /* For IE8 and earlier */
+    background-image: linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -o-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -moz-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -webkit-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -ms-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0.02, #0B85A7), color-stop(0.51, #0EAAD9) );
+}
 
-menu a {
+.slider .image
+{
+    overflow: hidden;
+    width: 100%;
+    height: 400px;
+    background-image: url(http://static.livedemo00.template-help.com/wt_40891/images/slide-1.jpg);
+    background-position: 50% 0%;
+    background-repeat: no-repeat no-repeat;
+}
+
+menu a
+{
     display: block;
     position: relative;
     font-size: 17px;
     line-height: 21px;
     padding: 18px 29px;
     color: white;
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Oswald' , sans-serif;
     float: left;
     text-decoration: none;
     transition: background-image 2s linear;
@@ -544,34 +675,38 @@ menu a {
     -o-transition: background-image 2s linear;
 }
 
-    menu a:hover {
-        transition: background-image 2s linear;
-        -moz-transition: background-image 2s linear;
-        -webkit-transition: background-image 2s linear;
-        -o-transition: background-image 2s linear;
-        background-image: linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
-        background-image: -o-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
-        background-image: -moz-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
-        background-image: -webkit-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
-        background-image: -ms-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
-        background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0.02, #0B85A7), color-stop(0.51, #0EAAD9) );
-    }
+menu a:hover
+{
+    transition: background-image 2s linear;
+    -moz-transition: background-image 2s linear;
+    -webkit-transition: background-image 2s linear;
+    -o-transition: background-image 2s linear;
+    background-image: linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -o-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -moz-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -webkit-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -ms-linear-gradient(bottom, #0B85A7 2%, #0EAAD9 51%);
+    background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0.02, #0B85A7), color-stop(0.51, #0EAAD9) );
+}
 
-.divider-left {
+.divider-left
+{
     height: 58px;
     width: 1px;
     background-color: #272727;
     float: left;
 }
 
-.divider-right {
+.divider-right
+{
     height: 58px;
     width: 1px;
     background-color: #070707;
     float: left;
 }
 
-menu {
+menu
+{
     background-image: linear-gradient(bottom, #171717 2%, #212121 51%);
     background-image: -o-linear-gradient(bottom, #171717 2%, #212121 51%);
     background-image: -moz-linear-gradient(bottom, #171717 2%, #212121 51%);
@@ -585,12 +720,14 @@ menu {
     border-top: 1px solid #272727;
 }
 
-#content {
+#content
+{
     background-color: #1c1c1c;
     width: 100%;
 }
 
-.clear {
+.clear
+{
     clear: both;
     display: block;
     overflow: hidden;
@@ -599,12 +736,14 @@ menu {
     height: 0;
 }
 
-section {
+section
+{
     margin: 0;
     padding: 0;
 }
 
-header {
+header
+{
     background-image: linear-gradient(bottom, #171717 2%, #212121 51%);
     background-image: -o-linear-gradient(bottom, #171717 2%, #212121 51%);
     background-image: -moz-linear-gradient(bottom, #171717 2%, #212121 51%);
@@ -618,76 +757,100 @@ header {
     margin: 0;
 }
 
-    header h1 {
-        color: #fff;
-        padding: 30px 0 0 0;
-        margin: 0;
-        float: left;
-        font-size: 45px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-    }
+header h1
+{
+    color: #fff;
+    padding: 30px 0 0 0;
+    margin: 0;
+    float: left;
+    font-size: 45px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
 
-        header h1 span {
-            color: #0EAAD9;
-            font-size: 35px;
-            text-transform: uppercase;
-        }
+header h1 span
+{
+    color: #0EAAD9;
+    font-size: 35px;
+    text-transform: uppercase;
+}
 
-.main {
+.main
+{
     width: 980px;
     padding: 0;
     margin: 0 auto;
 }
 
-html {
+html
+{
     background-color: #e2e2e2;
     margin: 0;
     padding: 0;
 }
 
-body {
+body
+{
     background-color: #1c1c1c;
     color: #333;
     font-size: .85em;
-    font-family: "Oswald", "Segoe UI", Verdana, Helvetica, Sans-Serif;
+    font-family: "Oswald" , "Segoe UI" , Verdana, Helvetica, Sans-Serif;
     margin: 0;
     padding: 0;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6
+{
     color: #111;
     margin-bottom: .75em;
 }
 
-h1 {
+h1
+{
     font-size: 30px;
     line-height: 1em;
 }
 
-h2 {
+h2
+{
     font-size: 24px;
     font-weight: normal;
     color: #222;
     margin-bottom: 1em;
 }
 
-h3 {
+h3
+{
     font-size: 16px;
     color: #333;
     line-height: 1;
     margin-bottom: .75em;
 }
 
-h4 {
+h4
+{
     font-size: 14px;
     color: #666;
     line-height: 1.25;
     margin-bottom: 1.25em;
 }
 
-h5 {
+h5
+{
     font-size: 12px;
     font-weight: bold;
     margin-bottom: 1.5em;
+}
+
+.entry-title a 
+{
+    color: White;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.entry-title a:hover
+{
+    color: White;
+    text-decoration: underline;
 }

@@ -8,6 +8,10 @@
     @Html.Partial("_featured", new RallyPortal.Models.FeaturedData { ImageUrl = Model.ImageUrl, Title = Model.Title })
 }
 
+@section metadata {
+    @Html.Partial("_metadata", Model)
+}
+
 <div class="entry">
     <div class="inner1">
         <div class="entry-image" style="background-image: url(@Url.Action("GetPhotoThumbnail",
@@ -17,7 +21,8 @@
     </div>
     <div class="inner5">
         <p>@Html.Raw(HttpUtility.HtmlDecode(Model.Content))</p>
-        <p>@Html.Raw(Model.VideoUrl)</p>
+        <p>@Html.Raw(Model.VideoUrl)</p>        
+        @Html.Partial("_social", Model) 
     </div>
     <div class="inner2">
         <div class="inner3">

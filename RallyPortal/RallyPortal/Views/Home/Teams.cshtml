@@ -19,20 +19,7 @@
             <div class="entry-image" style="background-image: url(@Url.Action("GetPhotoThumbnail",
      new { path = team.TeamImageUrl, width = 701 }));">
             </div>
-            <div class="entry-title">Team - @team.TeamName</div>
-        </div>
-        <div class="inner5">
-            <p><b>Driver Name: </b>@team.Driver</p>
-            <p><b>Co-Driver Name: </b>@team.CoDriver</p>
-        </div>
-        <div class="inner2">
-            <div class="inner3">
-                &laquo;
-            </div>
-            <div class="inner4">
-                &raquo;
-            </div>
-            <div class="clear"></div>
-        </div>
+            <div class="entry-title">@Html.ActionLink("Team - " + team.TeamName, "Details", "Team", new { id=team.Id }, null)</div>
+        </div>        
     </div>
 }

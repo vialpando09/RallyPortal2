@@ -40,6 +40,7 @@ namespace RallyPortal.Controllers
                 return RedirectToLocal(returnUrl);
             }
 
+            SendMessageHere(MessageType.Error, "Check the error messages!");
             // If we got this far, something failed, redisplay form
             ModelState.AddModelError("", "The user name or password provided is incorrect.");
             return View(model);
@@ -79,7 +80,7 @@ namespace RallyPortal.Controllers
                 // Attempt to register the user
                 try
                 {
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password, new { EmailAddress = model.EmailAddress });
+                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password, new { Email = model.EmailAddress });
                     WebSecurity.Login(model.UserName, model.Password);
                     
                     return RedirectToAction("Index", "Home");
@@ -90,6 +91,7 @@ namespace RallyPortal.Controllers
                 }
             }
 
+            SendMessageHere(MessageType.Error, "Check the error messages!");
             // If we got this far, something failed, redisplay form
             return View(model);
         }
@@ -128,11 +130,15 @@ namespace RallyPortal.Controllers
 
         public ActionResult Manage(ManageMessageId? message)
         {
-            ViewBag.StatusMessage =
+            string msg =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
                 : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
                 : "";
+
+            if(msg != "")
+                SendMessageHere(MessageType.Success, msg);
+
             ViewBag.HasLocalPassword = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             ViewBag.ReturnUrl = Url.Action("Manage");
             return View();
@@ -197,6 +203,7 @@ namespace RallyPortal.Controllers
                 }
             }
 
+            SendMessageHere(MessageType.Error, "Check the error messages!");
             // If we got this far, something failed, redisplay form
             return View(model);
         }

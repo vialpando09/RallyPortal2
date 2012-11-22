@@ -11,6 +11,10 @@
     team <span>details</span>
 </div>
 
+<div class="title module-blue">
+    team <span>summary</span>
+</div>
+
 <div class="entry">
     <div class="inner1">
         <div class="entry-image" style="background-image: url(@Url.Action("GetPhotoThumbnail",
@@ -21,15 +25,10 @@
     <div class="inner5">
         <p>@Html.Raw(HttpUtility.HtmlDecode(Model.TeamSummary))</p>
     </div>
-    <div class="inner2">
-        <div class="inner3">
-            &laquo;
-        </div>
-        <div class="inner4">
-            &raquo;
-        </div>
-        <div class="clear"></div>
-    </div>
+</div>
+
+<div class="title module-blue">
+    driver <span>summary</span>
 </div>
 
 <div class="entry">
@@ -42,15 +41,10 @@
     <div class="inner5">
         <p>@Html.Raw(HttpUtility.HtmlDecode(Model.DriverSummary))</p>
     </div>
-    <div class="inner2">
-        <div class="inner3">
-            &laquo;
-        </div>
-        <div class="inner4">
-            &raquo;
-        </div>
-        <div class="clear"></div>
-    </div>
+</div>
+
+<div class="title module-blue">
+    co-driver <span>summary</span>
 </div>
 
 <div class="entry">
@@ -62,14 +56,5 @@
     </div>
     <div class="inner5">
         <p>@Html.Raw(HttpUtility.HtmlDecode(Model.CoDriverSummary))</p>
-    </div>
-    <div class="inner2">
-        <div class="inner3">
-            &laquo;           
-        </div>
-        <div class="inner4">
-            &raquo;
-        </div>
-        <div class="clear"></div>
     </div>
 </div>
